@@ -1,845 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}CINE-Odia | Home{% endblock %}
+{% block title %}
+CINE-Odia
+{% endblock %}
 
 {% block extra_css %}
-<style>
-.cine-banner {
-    width: 100%;
-    overflow: hidden;
-    background: #080b10;
-}
-
-.cine-main {
-    position: relative;
-    width: 100%;
-    min-height: 720px;
-    overflow: hidden;
-    isolation: isolate;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.cine-image-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    background-image: url("{{ url_for('static', filename='images/Main-Banner.png') }}");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    transform: scale(1.03);
-    animation: cinematicZoom 18s ease-in-out infinite alternate;
-}
-
-@keyframes cinematicZoom {
-    0% {
-        transform: scale(1.03);
-    }
-
-    100% {
-        transform: scale(1.09);
-    }
-}
-
-.cine-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background:
-        linear-gradient(
-            180deg,
-            rgba(0, 0, 0, 0.72) 0%,
-            rgba(0, 0, 0, 0.40) 30%,
-            rgba(0, 0, 0, 0.45) 60%,
-            rgba(0, 0, 0, 0.92) 100%
-        );
-}
-
-.cine-overlay::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0, 0, 0, 0.72) 0%,
-            transparent 35%,
-            transparent 65%,
-            rgba(0, 0, 0, 0.50) 100%
-        );
-}
-
-.cine-light {
-    position: absolute;
-    z-index: 3;
-    width: 450px;
-    height: 450px;
-    border-radius: 50%;
-    background: var(--primary);
-    opacity: 0.08;
-    filter: blur(100px);
-    pointer-events: none;
-}
-
-.cine-light.one {
-    top: -220px;
-    left: -180px;
-}
-
-.cine-light.two {
-    right: -220px;
-    bottom: -250px;
-    opacity: 0.06;
-}
-
-.cine-grid {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    pointer-events: none;
-    opacity: 0.05;
-    background-image:
-        linear-gradient(
-            rgba(255, 255, 255, 0.35) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.35) 1px,
-            transparent 1px
-        );
-    background-size: 55px 55px;
-    mask-image: linear-gradient(to bottom, black, transparent);
-}
-
-.cine-recommendation {
-    position: relative;
-    z-index: 10;
-    width: min(900px, 92%);
-    margin: 0 auto;
-    padding: 55px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.cine-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 18px;
-    padding: 8px 15px;
-    border: 1px solid rgba(255, 255, 255, 0.20);
-    border-radius: 50px;
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.90);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.20);
-    animation: fadeDown 0.8s ease both;
-}
-
-.cine-badge i {
-    color: var(--primary);
-    font-size: 13px;
-}
-
-.cine-recommendation-title {
-    margin: 0;
-    color: #ffffff;
-    font-size: clamp(32px, 5vw, 58px);
-    font-weight: 900;
-    line-height: 1.05;
-    letter-spacing: -2px;
-    text-shadow: 0 5px 25px rgba(0, 0, 0, 0.45);
-    animation: titleReveal 0.9s ease both;
-}
-
-.cine-recommendation-title span {
-    position: relative;
-    display: inline-block;
-    color: var(--primary);
-}
-
-.cine-recommendation-title span::after {
-    content: "";
-    position: absolute;
-    left: 4%;
-    right: 4%;
-    bottom: -7px;
-    height: 3px;
-    border-radius: 20px;
-    background: var(--primary);
-    opacity: 0.8;
-    transform: scaleX(0);
-    transform-origin: left;
-    animation: underlineReveal 1s ease 0.7s forwards;
-}
-
-.cine-recommendation-subtitle {
-    max-width: 650px;
-    margin: 20px auto 28px;
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 15px;
-    line-height: 1.7;
-    animation: fadeUp 1s ease 0.2s both;
-}
-
-/* Movie preference card */
-.movie-preference-box {
-    position: relative;
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.20);
-    border-radius: 26px;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.12),
-            rgba(255, 255, 255, 0.045)
-        );
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-    box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.40),
-        inset 0 1px 1px rgba(255, 255, 255, 0.15);
-    animation: cardReveal 0.9s ease 0.3s both;
-}
-
-.movie-preference-box::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 12%;
-    width: 76%;
-    height: 1px;
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.55),
-            transparent
-        );
-}
-
-.preference-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 18px;
-    text-align: left;
-}
-
-.preference-heading {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0;
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 750;
-}
-
-.preference-heading i {
-    display: grid;
-    place-items: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.10);
-    color: var(--primary);
-    font-size: 14px;
-}
-
-.preference-counter {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 11px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 50px;
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.65);
-    font-size: 11px;
-    font-weight: 600;
-}
-
-.preference-counter i {
-    color: var(--primary);
-}
-
-.movie-inputs {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    width: 100%;
-    margin: 0 auto;
-}
-
-.movie-field {
-    position: relative;
-    display: flex;
-    align-items: center;
-    min-width: 0;
-    height: 58px;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 15px;
-    background: rgba(255, 255, 255, 0.065);
-    overflow: hidden;
-    transition:
-        border-color 0.3s ease,
-        background 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.3s ease;
-    animation: fieldReveal 0.45s ease both;
-}
-
-.movie-field::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 15%;
-    width: 2px;
-    height: 70%;
-    border-radius: 10px;
-    background: var(--primary);
-    opacity: 0;
-    transition: 0.3s ease;
-}
-
-.movie-field:hover {
-    border-color: rgba(255, 255, 255, 0.32);
-    background: rgba(255, 255, 255, 0.10);
-    transform: translateY(-2px);
-}
-
-.movie-field:focus-within {
-    border-color: var(--primary);
-    background: rgba(255, 255, 255, 0.12);
-    box-shadow:
-        0 0 0 3px rgba(255, 255, 255, 0.05),
-        0 10px 30px rgba(0, 0, 0, 0.20);
-}
-
-.movie-field:focus-within::before {
-    opacity: 1;
-}
-
-.movie-number {
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-    width: 34px;
-    height: 34px;
-    margin-left: 10px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.10);
-    color: rgba(255, 255, 255, 0.80);
-    font-size: 11px;
-    font-weight: 800;
-    transition: 0.3s ease;
-}
-
-.movie-field:focus-within .movie-number {
-    background: var(--primary);
-    color: #ffffff;
-    transform: scale(1.05);
-}
-
-.movie-field input {
-    width: 100%;
-    min-width: 0;
-    height: 100%;
-    padding: 0 12px;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: #ffffff;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 500;
-}
-
-.movie-field input::placeholder {
-    color: rgba(255, 255, 255, 0.50);
-}
-
-/* Remove button for dynamically added fields */
-.remove-movie {
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-    width: 30px;
-    height: 30px;
-    margin-right: 9px;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.07);
-    color: rgba(255, 255, 255, 0.55);
-    cursor: pointer;
-    opacity: 0;
-    pointer-events: none;
-    transition:
-        opacity 0.25s ease,
-        background 0.25s ease,
-        color 0.25s ease,
-        transform 0.25s ease;
-}
-
-.movie-field:hover .remove-movie,
-.movie-field:focus-within .remove-movie {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.remove-movie:hover {
-    background: rgba(255, 60, 60, 0.85);
-    color: #ffffff;
-    transform: rotate(90deg);
-}
-
-.preference-actions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    margin-top: 18px;
-}
-
-.preference-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    min-height: 48px;
-    padding: 0 22px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 13px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    overflow: hidden;
-    transition:
-        transform 0.3s ease,
-        background 0.3s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.add-movie-btn {
-    background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-}
-
-.add-movie-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.35);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.20);
-}
-
-.add-movie-btn i {
-    transition: transform 0.3s ease;
-}
-
-.add-movie-btn:hover i {
-    transform: rotate(90deg);
-}
-
-.suggestion-btn {
-    min-width: 185px;
-    border: none;
-    background: var(--primary);
-    color: #ffffff;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-}
-
-.suggestion-btn::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -130%;
-    width: 80%;
-    height: 100%;
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.35),
-            transparent
-        );
-    transform: skewX(-20deg);
-    transition: left 0.7s ease;
-}
-
-.suggestion-btn:hover::before {
-    left: 140%;
-}
-
-.suggestion-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
-}
-
-.suggestion-btn i {
-    transition: transform 0.3s ease;
-}
-
-.suggestion-btn:hover i {
-    transform: rotate(12deg) scale(1.12);
-}
-
-.preference-btn:active {
-    transform: scale(0.96);
-}
-
-.preference-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.movie-limit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    margin: 13px 0 0;
-    color: rgba(255, 255, 255, 0.50);
-    font-size: 11px;
-}
-
-.movie-limit i {
-    font-size: 10px;
-    color: var(--primary);
-}
-
-.cine-bottom-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 25px;
-    margin-top: 25px;
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 11px;
-    animation: fadeUp 1s ease 0.5s both;
-}
-
-.cine-info-item {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-}
-
-.cine-info-item i {
-    color: var(--primary);
-}
-
-.cine-info-divider {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.35);
-}
-
-.cine-corner {
-    position: absolute;
-    z-index: 5;
-    width: 80px;
-    height: 80px;
-    pointer-events: none;
-    opacity: 0.35;
-}
-
-.cine-corner.top-left {
-    top: 25px;
-    left: 25px;
-    border-top: 1px solid rgba(255, 255, 255, 0.30);
-    border-left: 1px solid rgba(255, 255, 255, 0.30);
-}
-
-.cine-corner.bottom-right {
-    right: 25px;
-    bottom: 25px;
-    border-right: 1px solid rgba(255, 255, 255, 0.30);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.30);
-}
-
-@keyframes fadeDown {
-    from {
-        opacity: 0;
-        transform: translateY(-15px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(18px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes titleReveal {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.97);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes cardReveal {
-    from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.97);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes fieldReveal {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes underlineReveal {
-    to {
-        transform: scaleX(1);
-    }
-}
-
-@media (max-width: 900px) {
-    .cine-main {
-        min-height: 760px;
-    }
-
-    .cine-recommendation {
-        width: min(720px, 92%);
-        padding: 55px 0;
-    }
-
-    .movie-inputs {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .cine-bottom-info {
-        margin-top: 22px;
-    }
-}
-
-@media (max-width: 600px) {
-    .cine-main {
-        min-height: 850px;
-    }
-
-    .cine-image-layer {
-        background-position: 58% center;
-    }
-
-    .cine-recommendation {
-        width: 94%;
-        padding: 40px 0;
-    }
-
-    .cine-badge {
-        margin-bottom: 14px;
-        padding: 7px 12px;
-        font-size: 9px;
-    }
-
-    .cine-recommendation-title {
-        font-size: 32px;
-        letter-spacing: -1.2px;
-    }
-
-    .cine-recommendation-title span::after {
-        bottom: -5px;
-    }
-
-    .cine-recommendation-subtitle {
-        max-width: 95%;
-        margin: 17px auto 22px;
-        font-size: 13px;
-        line-height: 1.6;
-    }
-
-    .movie-preference-box {
-        padding: 17px;
-        border-radius: 21px;
-    }
-
-    .preference-header {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .movie-inputs {
-        grid-template-columns: 1fr;
-        gap: 9px;
-    }
-
-    .movie-field {
-        height: 53px;
-    }
-
-    .preference-actions {
-        flex-direction: column;
-        gap: 9px;
-    }
-
-    .preference-btn {
-        width: 100%;
-    }
-
-    .suggestion-btn {
-        min-width: 0;
-    }
-
-    .cine-bottom-info {
-        flex-wrap: wrap;
-        gap: 10px 15px;
-        margin-top: 20px;
-        font-size: 10px;
-    }
-
-    .cine-info-divider {
-        display: none;
-    }
-
-    .cine-corner {
-        width: 45px;
-        height: 45px;
-    }
-
-    .cine-corner.top-left {
-        top: 15px;
-        left: 15px;
-    }
-
-    .cine-corner.bottom-right {
-        right: 15px;
-        bottom: 15px;
-    }
-}
-
-@media (max-width: 400px) {
-    .cine-main {
-        min-height: 875px;
-    }
-
-    .cine-recommendation {
-        width: 95%;
-        padding: 30px 0;
-    }
-
-    .cine-recommendation-title {
-        font-size: 28px;
-    }
-
-    .cine-recommendation-subtitle {
-        font-size: 12px;
-    }
-
-    .movie-preference-box {
-        padding: 14px;
-    }
-
-    .preference-heading {
-        font-size: 13px;
-    }
-
-    .preference-counter {
-        font-size: 10px;
-    }
-
-    .movie-field {
-        height: 50px;
-    }
-
-    .movie-number {
-        width: 31px;
-        height: 31px;
-    }
-
-    .movie-field input {
-        font-size: 12px;
-    }
-
-    .cine-bottom-info {
-        display: none;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .cine-image-layer,
-    .cine-badge,
-    .cine-recommendation-title,
-    .cine-recommendation-subtitle,
-    .movie-preference-box,
-    .movie-field,
-    .cine-bottom-info {
-        animation: none !important;
-    }
-
-    .suggestion-btn::before {
-        display: none;
-    }
-}
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
 {% block content %}
 
+<!-- CINE-ODIA MOVIE RECOMMENDATION -->
 <section class="cine-banner">
+
     <div class="cine-main">
 
-        <!-- Background and visual effects -->
-        <div
-            class="cine-image-layer"
-            aria-hidden="true">
-        </div>
+        <div class="cine-image-layer" aria-hidden="true"></div>
 
         <div class="cine-overlay"></div>
 
@@ -851,7 +27,6 @@
         <div class="cine-corner top-left"></div>
         <div class="cine-corner bottom-right"></div>
 
-        <!-- Centered recommendation content -->
         <div class="cine-recommendation">
 
             <div class="cine-badge">
@@ -870,107 +45,78 @@
                 discover your next cinematic favorite.
             </p>
 
-            <!--
-                All movie inputs use name="movies".
-
-                Flask can therefore receive every movie using:
-                request.form.getlist("movies")
-            -->
-            <form
-                class="movie-preference-box"
-                id="moviePreferenceForm"
-                method="POST"
-                action="/"
-            >
+            <!-- MOVIE PREFERENCE FORM -->
+            <form class="movie-preference-box" id="moviePreferenceForm" method="POST" action="/">
 
                 <div class="preference-header">
+
                     <h2 class="preference-heading">
                         <i class="fa-solid fa-heart"></i>
                         <span>Your Favorite Movies</span>
                     </h2>
 
-                    <div
-                        class="preference-counter"
-                        id="movieCounter"
-                    >
+                    <div class="preference-counter" id="movieCounter">
                         <i class="fa-solid fa-clapperboard"></i>
                         <span>3 / 10</span>
                     </div>
+
                 </div>
 
-                <!-- Movie input fields are dynamically expanded up to 10 -->
-                <div
-                    class="movie-inputs"
-                    id="movieInputs"
-                >
-                    <div class="movie-field">
-                        <span class="movie-number">01</span>
+                <!-- MOVIE INPUTS -->
+                <div class="movie-inputs" id="movieInputs">
 
-                        <input
-                            type="text"
-                            name="movies"
-                            class="movie-input"
-                            placeholder="Favorite movie 1"
-                            autocomplete="off"
-                            aria-label="Favorite movie 1"
-                        >
+                    <div class="movie-field">
+
+                        <span class="movie-number">
+                            01
+                        </span>
+
+                        <input type="text" name="movies" class="movie-input" placeholder="Favorite movie 1"
+                            autocomplete="off" aria-label="Favorite movie 1">
+
                     </div>
 
                     <div class="movie-field">
-                        <span class="movie-number">02</span>
 
-                        <input
-                            type="text"
-                            name="movies"
-                            class="movie-input"
-                            placeholder="Favorite movie 2"
-                            autocomplete="off"
-                            aria-label="Favorite movie 2"
-                        >
+                        <span class="movie-number">
+                            02
+                        </span>
+
+                        <input type="text" name="movies" class="movie-input" placeholder="Favorite movie 2"
+                            autocomplete="off" aria-label="Favorite movie 2">
+
                     </div>
 
                     <div class="movie-field">
-                        <span class="movie-number">03</span>
 
-                        <input
-                            type="text"
-                            name="movies"
-                            class="movie-input"
-                            placeholder="Favorite movie 3"
-                            autocomplete="off"
-                            aria-label="Favorite movie 3"
-                        >
+                        <span class="movie-number">
+                            03
+                        </span>
+
+                        <input type="text" name="movies" class="movie-input" placeholder="Favorite movie 3"
+                            autocomplete="off" aria-label="Favorite movie 3">
+
                     </div>
+
                 </div>
 
+                <!-- FORM ACTIONS -->
                 <div class="preference-actions">
 
-                    <!-- Adds another movie input -->
-                    <button
-                        type="button"
-                        class="preference-btn add-movie-btn"
-                        id="addMovieBtn"
-                    >
+                    <button type="button" class="preference-btn add-movie-btn" id="addMovieBtn">
                         <i class="fa-solid fa-plus"></i>
                         <span>Add More</span>
                     </button>
 
-                    <!-- Sends all movie values to / -->
-                    <button
-                        type="submit"
-                        class="preference-btn suggestion-btn"
-                        id="suggestionBtn"
-                    >
+                    <button type="submit" class="preference-btn suggestion-btn" id="suggestionBtn">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                         <span>Get Suggestions</span>
                     </button>
 
                 </div>
 
-                <p
-                    class="movie-limit"
-                    id="movieLimit"
-                >
+                <!-- MOVIE LIMIT -->
+                <p class="movie-limit" id="movieLimit">
                     <i class="fa-solid fa-circle-info"></i>
                     <span>
                         Add at least one movie.
@@ -980,7 +126,9 @@
 
             </form>
 
+            <!-- BOTTOM INFORMATION -->
             <div class="cine-bottom-info">
+
                 <div class="cine-info-item">
                     <i class="fa-solid fa-star"></i>
                     <span>Personalized Recommendations</span>
@@ -999,282 +147,132 @@
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                     <span>Smart Discovery</span>
                 </div>
+
             </div>
 
         </div>
+
     </div>
+
+</section>
+
+
+<!-- MOVIE EXPLORE SECTION -->
+<section class="movie-explore-section" id="movies">
+
+    <div class="movie-explore-container">
+
+        <div class="movie-explore-header">
+
+            <div class="movie-explore-heading-wrapper">
+
+                <div class="movie-explore-label">
+                    <i class="fa-solid fa-film"></i>
+                    <span>CINE-Odia Collection</span>
+                </div>
+
+                <h2 class="movie-explore-title">
+                    Explore
+                    <span>Odia Movies</span>
+                </h2>
+
+                <p class="movie-explore-description">
+                    Search through our collection and discover
+                    movies you may have missed.
+                </p>
+
+            </div>
+
+            <!-- SEARCH FORM -->
+            <form class="movie-search-form" method="POST" action="{{ url_for('home') }}#movies">
+
+                <div class="movie-search-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <input type="search" name="search" class="movie-search-input" placeholder="Search an Odia movie..."
+                    autocomplete="off" maxlength="100">
+
+                <button type="submit" class="movie-search-button" name="search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Search</span>
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- SEARCH RESULTS -->
+        <div class="movie-search-results">
+
+            {% if all_movies %}
+
+            {% for movie in all_movies %}
+
+            <div class="movie-card">
+
+                <div class="movie-card-poster">
+                    <img src="{{ movie.poster_link }}" alt="{{ movie.title }}">
+                </div>
+
+                <div class="movie-card-content">
+
+                    <h3 class="movie-card-title">
+                        {{ movie.title }}
+                    </h3>
+
+                    <p class="movie-card-info">
+                        <strong>Release:</strong>
+                        {{ movie.release }}
+                    </p>
+
+                    <p class="movie-card-info">
+                        <strong>Rating:</strong>
+                        {{ movie.rate }}
+                    </p>
+
+                    <p class="movie-card-info">
+                        <strong>Genre:</strong>
+                        {{ movie.genre }}
+                    </p>
+
+                    <p class="movie-card-info">
+                        <strong>Cast:</strong>
+                        {{ movie.star_cast }}
+                    </p>
+
+                    <a href="{{ movie.movie_link }}" target="_blank" class="movie-card-button">
+                        <i class="fa-solid fa-play"></i>
+                        Explore on youtube
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+            {% else %}
+
+            <div class="movie-search-empty">
+                <i class="fa-solid fa-film"></i>
+                <span>No movies found.</span>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
 </section>
 
 {% endblock %}
 
+
 {% block extra_js %}
-<script>
-document.addEventListener("DOMContentLoaded", function () {
 
-    const movieForm = document.getElementById("moviePreferenceForm");
-    const movieInputs = document.getElementById("movieInputs");
-    const addMovieBtn = document.getElementById("addMovieBtn");
-    const suggestionBtn = document.getElementById("suggestionBtn");
-    const movieLimit = document.getElementById("movieLimit");
-    const movieCounter = document.getElementById("movieCounter");
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
-    const MAX_MOVIES = 10;
-
-    if (!movieForm || !movieInputs || !addMovieBtn) {
-        return;
-    }
-
-    // Updates the movie counter and status message.
-    function updateMovieStatus() {
-        const fields = movieInputs.querySelectorAll(".movie-field");
-        const count = fields.length;
-
-        movieCounter.innerHTML = `
-            <i class="fa-solid fa-clapperboard"></i>
-            <span>${count} / ${MAX_MOVIES}</span>
-        `;
-
-        if (count >= MAX_MOVIES) {
-            movieLimit.innerHTML = `
-                <i class="fa-solid fa-circle-check"></i>
-                <span>You have reached the maximum of 10 movies.</span>
-            `;
-
-            addMovieBtn.disabled = true;
-        } else {
-            movieLimit.innerHTML = `
-                <i class="fa-solid fa-circle-info"></i>
-                <span>
-                    ${count}/10 favorite movies added.
-                    Add more for better recommendations.
-                </span>
-            `;
-
-            addMovieBtn.disabled = false;
-        }
-    }
-
-    // Keeps movie numbers and placeholders correct after removing a field.
-    function renumberMovieFields() {
-        const fields = movieInputs.querySelectorAll(".movie-field");
-
-        fields.forEach(function (field, index) {
-            const number = index + 1;
-
-            const numberElement =
-                field.querySelector(".movie-number");
-
-            const input =
-                field.querySelector(".movie-input");
-
-            const removeButton =
-                field.querySelector(".remove-movie");
-
-            if (numberElement) {
-                numberElement.textContent =
-                    String(number).padStart(2, "0");
-            }
-
-            if (input) {
-                input.placeholder =
-                    `Favorite movie ${number}`;
-
-                input.setAttribute(
-                    "aria-label",
-                    `Favorite movie ${number}`
-                );
-            }
-
-            if (removeButton) {
-                removeButton.setAttribute(
-                    "aria-label",
-                    `Remove movie ${number}`
-                );
-            }
-        });
-    }
-
-    // Adds a new movie input field.
-    addMovieBtn.addEventListener("click", function () {
-
-        const fields =
-            movieInputs.querySelectorAll(".movie-field");
-
-        const movieCount = fields.length;
-
-        if (movieCount >= MAX_MOVIES) {
-            return;
-        }
-
-        const nextNumber = movieCount + 1;
-
-        const field = document.createElement("div");
-
-        field.className = "movie-field";
-
-        field.innerHTML = `
-            <span class="movie-number">
-                ${String(nextNumber).padStart(2, "0")}
-            </span>
-
-            <input
-                type="text"
-                name="movies"
-                class="movie-input"
-                placeholder="Favorite movie ${nextNumber}"
-                autocomplete="off"
-                aria-label="Favorite movie ${nextNumber}"
-            >
-
-            <button
-                type="button"
-                class="remove-movie"
-                aria-label="Remove movie ${nextNumber}"
-            >
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        `;
-
-        movieInputs.appendChild(field);
-
-        updateMovieStatus();
-
-        // Automatically focuses the newly created field.
-        const input = field.querySelector(".movie-input");
-
-        if (input) {
-            setTimeout(function () {
-                input.focus();
-            }, 100);
-        }
-    });
-
-    // Removes dynamically added movie fields.
-    movieInputs.addEventListener("click", function (event) {
-
-        const removeButton =
-            event.target.closest(".remove-movie");
-
-        if (!removeButton) {
-            return;
-        }
-
-        const field =
-            removeButton.closest(".movie-field");
-
-        if (!field) {
-            return;
-        }
-
-        const fields =
-            movieInputs.querySelectorAll(".movie-field");
-
-        // Always keep at least one input field.
-        if (fields.length <= 1) {
-            movieLimit.innerHTML = `
-                <i class="fa-solid fa-circle-info"></i>
-                <span>Keep at least one movie field.</span>
-            `;
-
-            return;
-        }
-
-        field.style.opacity = "0";
-        field.style.transform =
-            "scale(0.92) translateY(10px)";
-
-        setTimeout(function () {
-            field.remove();
-
-            renumberMovieFields();
-            updateMovieStatus();
-        }, 220);
-    });
-
-    // Allows Enter to move to the next input.
-    movieInputs.addEventListener("keydown", function (event) {
-
-        if (event.key !== "Enter") {
-            return;
-        }
-
-        const input =
-            event.target.closest(".movie-input");
-
-        if (!input) {
-            return;
-        }
-
-        event.preventDefault();
-
-        const inputs =
-            Array.from(
-                movieInputs.querySelectorAll(".movie-input")
-            );
-
-        const currentIndex =
-            inputs.indexOf(input);
-
-        const nextInput =
-            inputs[currentIndex + 1];
-
-        if (nextInput) {
-            nextInput.focus();
-        } else {
-            movieForm.requestSubmit();
-        }
-    });
-
-    // Validates the form before sending the movies to Flask.
-    movieForm.addEventListener("submit", function (event) {
-
-        const inputs =
-            movieInputs.querySelectorAll(".movie-input");
-
-        const movies = [];
-
-        // Collect all non-empty movie names.
-        inputs.forEach(function (input) {
-            const movie = input.value.trim();
-
-            if (movie) {
-                movies.push(movie);
-            }
-        });
-
-        // At least one movie is required.
-        if (movies.length === 0) {
-            event.preventDefault();
-
-            movieLimit.innerHTML = `
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <span>
-                    Please enter at least one favorite movie.
-                </span>
-            `;
-
-            const firstInput =
-                movieInputs.querySelector(".movie-input");
-
-            if (firstInput) {
-                firstInput.focus();
-            }
-
-            return;
-        }
-
-        // Shows loading state while Flask processes the request.
-        suggestionBtn.disabled = true;
-
-        suggestionBtn.innerHTML = `
-            <i class="fa-solid fa-spinner fa-spin"></i>
-            <span>Finding Movies...</span>
-        `;
-    });
-
-    // Initialize the form.
-    renumberMovieFields();
-    updateMovieStatus();
-});
-</script>
 {% endblock %}

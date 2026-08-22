@@ -2,14 +2,26 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>{% block title %}CINE-Odia{% endblock %}</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+
+    <link rel="icon"
+          type="image/png"
+          href="{{ url_for('static', filename='favicon.png') }}">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -50,6 +62,10 @@
             transition: background 0.5s ease, color 0.5s ease;
         }
 
+        /* =========================
+           NAVBAR
+           ========================= */
+
         .navbar {
             width: 100%;
             height: 72px;
@@ -61,7 +77,10 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+            transition:
+                background 0.5s ease,
+                border-color 0.5s ease,
+                box-shadow 0.5s ease;
         }
 
         .logo {
@@ -87,6 +106,10 @@
         .logo:hover img {
             transform: scale(1.08);
         }
+
+        /* =========================
+           NAV LINKS
+           ========================= */
 
         .nav-links {
             display: flex;
@@ -137,6 +160,10 @@
             width: 100%;
         }
 
+        /* =========================
+           THEME BUTTON
+           ========================= */
+
         .theme-btn {
             position: relative;
             width: 32px;
@@ -166,7 +193,9 @@
             position: absolute;
             font-size: 25px;
             color: var(--heading);
-            transition: transform 0.5s ease, opacity 0.4s ease;
+            transition:
+                transform 0.5s ease,
+                opacity 0.4s ease;
         }
 
         .moon {
@@ -197,6 +226,10 @@
             transform: rotate(20deg) scale(1.15);
         }
 
+        /* =========================
+           MENU BUTTON
+           ========================= */
+
         .menu-btn {
             display: none;
             width: 32px;
@@ -214,7 +247,9 @@
 
         .menu-btn i {
             font-size: 22px;
-            transition: transform 0.4s ease, opacity 0.3s ease;
+            transition:
+                transform 0.4s ease,
+                opacity 0.3s ease;
         }
 
         .menu-btn:hover {
@@ -225,20 +260,27 @@
             transform: scale(0.85);
         }
 
-        /* main {
+        /* =========================
+           MAIN
+           ========================= */
+
+        main {
             flex: 1;
             width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 7%;
-        } */
+        }
+
+        /* =========================
+           FOOTER
+           ========================= */
 
         footer {
             width: 100%;
             background: var(--navbar);
             border-top: 1px solid var(--border);
             padding: 45px 7% 20px;
-            transition: background 0.5s ease, border-color 0.5s ease;
+            transition:
+                background 0.5s ease,
+                border-color 0.5s ease;
         }
 
         .footer-container {
@@ -295,7 +337,9 @@
             color: var(--muted);
             text-decoration: none;
             font-size: 14px;
-            transition: color 0.3s ease, transform 0.3s ease;
+            transition:
+                color 0.3s ease,
+                transform 0.3s ease;
             display: inline-block;
         }
 
@@ -314,7 +358,12 @@
             font-size: 13px;
         }
 
-        @media(max-width:900px) {
+        /* =========================
+           TABLET
+           ========================= */
+
+        @media(max-width: 900px) {
+
             .navbar {
                 padding: 0 5%;
             }
@@ -327,10 +376,6 @@
                 margin-left: 15px;
             }
 
-            main {
-                padding: 35px 5%;
-            }
-
             footer {
                 padding: 40px 5% 20px;
             }
@@ -340,7 +385,12 @@
             }
         }
 
-        @media(max-width:768px) {
+        /* =========================
+           MOBILE
+           ========================= */
+
+        @media(max-width: 768px) {
+
             .navbar {
                 height: 68px;
             }
@@ -355,7 +405,7 @@
             }
 
             .menu-btn {
-                display: block;
+                display: flex;
                 order: 3;
             }
 
@@ -378,10 +428,16 @@
                 align-items: flex-start;
                 gap: 0;
                 margin: 0;
+
                 opacity: 0;
                 visibility: hidden;
                 transform: translateY(-10px);
-                transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background 0.5s ease;
+
+                transition:
+                    opacity 0.3s ease,
+                    visibility 0.3s ease,
+                    transform 0.3s ease,
+                    background 0.5s ease;
             }
 
             .nav-links.active {
@@ -416,7 +472,12 @@
             }
         }
 
-        @media(max-width:500px) {
+        /* =========================
+           SMALL MOBILE
+           ========================= */
+
+        @media(max-width: 500px) {
+
             .footer-container {
                 grid-template-columns: 1fr;
             }
@@ -430,119 +491,442 @@
                 height: 200px;
             }
         }
-    </style>
-    {% block extra_css %}
 
+    </style>
+
+    {% block extra_css %}
     {% endblock %}
+
 </head>
 
 <body>
+
+    <!-- =========================
+         NAVBAR
+         ========================= -->
+
     <header class="navbar">
-        <a href="{{ url_for('home') }}" class="logo">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CINE-Odia Logo">
+
+        <a href="{{ url_for('home') }}"
+           class="logo"
+           id="logoLink">
+
+            <img
+                src="{{ url_for('static', filename='images/logo.png') }}"
+                alt="CINE-Odia Logo">
+
         </a>
 
+
         <ul class="nav-links" id="navLinks">
+
+            <!-- HOME -->
+
             <li>
-                <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">Home</a>
+                <a
+                    href="{{ url_for('home') }}"
+                    id="homeLink"
+                    class="{% if request.endpoint == 'home' %}active{% endif %}">
+                    Home
+                </a>
             </li>
+
+
+            <!-- MOVIES -->
+
             <li>
-                <a href="{{ url_for('movies') }}"
-                    class="{% if request.endpoint == 'movies' %}active{% endif %}">Movies</a>
+                <a
+                    href="{{ url_for('home') }}#movies"
+                    id="moviesLink">
+                    Movies
+                </a>
             </li>
+
+
+            <!-- ABOUT -->
+
             <li>
-                <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">About</a>
+                <a
+                    href="#"
+                    id="aboutLink"
+                    class="{% if request.endpoint == 'about' %}active{% endif %}">
+                    About
+                </a>
             </li>
+
         </ul>
-        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+
+
+        <!-- THEME BUTTON -->
+
+        <button
+            class="theme-btn"
+            id="themeBtn"
+            aria-label="Toggle theme">
+
             <i class="fa-solid fa-moon moon"></i>
             <i class="fa-solid fa-sun sun"></i>
-        </button>
-        <button class="menu-btn" id="menuBtn" aria-label="Open menu">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-    </header>
-    <main>
-        {% block content %}
 
+        </button>
+
+
+        <!-- MOBILE MENU BUTTON -->
+
+        <button
+            class="menu-btn"
+            id="menuBtn"
+            aria-label="Open menu">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+    </header>
+
+
+    <!-- =========================
+         PAGE CONTENT
+         ========================= -->
+
+    <main>
+
+        {% block content %}
         {% endblock %}
+
     </main>
+
+
+    <!-- =========================
+         FOOTER
+         ========================= -->
+
     <footer>
+
         <div class="footer-container">
+
             <div>
+
                 <div class="footer-logo">
-                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CINE-Odia Logo">
+
+                    <img
+                        src="{{ url_for('static', filename='images/logo.png') }}"
+                        alt="CINE-Odia Logo">
+
                 </div>
+
                 <p class="footer-about">
-                    CINE-Odia is a platform dedicated to exploring and preserving the world of Odia cinema, movies,
+
+                    CINE-Odia is a platform dedicated to exploring
+                    and preserving the world of Odia cinema, movies,
                     actors, directors and filmmakers.
+
                 </p>
+
             </div>
+
+
             <div>
-                <h3 class="footer-title">Explore</h3>
+
+                <h3 class="footer-title">
+                    Explore
+                </h3>
+
                 <ul class="footer-links">
-                    <li><a href="{{ url_for('movies') }}">Movies</a></li>
+
+                    <li>
+                        <a href="{{ url_for('home') }}#movies">
+                            Movies
+                        </a>
+                    </li>
+
                 </ul>
+
             </div>
+
+
             <div>
-                <h3 class="footer-title">Resources</h3>
+
+                <h3 class="footer-title">
+                    Resources
+                </h3>
+
                 <ul class="footer-links">
-                    <li><a href="{{ url_for('about') }}">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Privacy</a></li>
+
+                    <li>
+                        <a href="#">
+                            About Us
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Contact
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Privacy
+                        </a>
+                    </li>
+
                 </ul>
+
             </div>
+
+
             <div>
-                <h3 class="footer-title">Connect</h3>
+
+                <h3 class="footer-title">
+                    Connect
+                </h3>
+
                 <ul class="footer-links">
-                    <li><a href="#">GitHub</a></li>
-                    <li><a href="#">Instagram</a></li>
-                    <li><a href="#">LinkedIn</a></li>
+
+                    <li>
+                        <a href="#">
+                            GitHub
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Instagram
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            LinkedIn
+                        </a>
+                    </li>
+
                 </ul>
+
             </div>
+
         </div>
+
+
         <div class="footer-bottom">
+
             © 2026 CINE-Odia | Built by Team Future Builders
+
         </div>
+
     </footer>
+
+
+    <!-- =========================
+         JAVASCRIPT
+         ========================= -->
+
     <script>
+
+        /* =========================================
+           MOBILE MENU
+           ========================================= */
+
         const menuBtn = document.getElementById("menuBtn");
         const navLinks = document.getElementById("navLinks");
 
-
         menuBtn.addEventListener("click", () => {
+
             navLinks.classList.toggle("active");
 
             const icon = menuBtn.querySelector("i");
 
             if (navLinks.classList.contains("active")) {
+
                 icon.classList.remove("fa-bars");
                 icon.classList.add("fa-xmark");
-                menuBtn.setAttribute("aria-label", "Close menu");
+
+                menuBtn.setAttribute(
+                    "aria-label",
+                    "Close menu"
+                );
+
             } else {
+
                 icon.classList.remove("fa-xmark");
                 icon.classList.add("fa-bars");
-                menuBtn.setAttribute("aria-label", "Open menu");
+
+                menuBtn.setAttribute(
+                    "aria-label",
+                    "Open menu"
+                );
+
             }
+
         });
 
-        const themeBtn = document.getElementById("themeBtn");
-        const savedTheme = localStorage.getItem("theme");
-        if (savedTheme === "light") {
-            document.body.classList.add("light-theme");
-        }
-        themeBtn.addEventListener("click", () => {
-            document.body.classList.toggle("light-theme");
-            if (document.body.classList.contains("light-theme")) {
-                localStorage.setItem("theme", "light");
-            } else {
-                localStorage.setItem("theme", "dark");
-            }
+
+        /* =========================================
+           CLOSE MOBILE MENU WHEN NAV LINK IS CLICKED
+           ========================================= */
+
+        const navItems = navLinks.querySelectorAll("a");
+
+        navItems.forEach((link) => {
+
+            link.addEventListener("click", () => {
+
+                navLinks.classList.remove("active");
+
+                const icon = menuBtn.querySelector("i");
+
+                icon.classList.remove("fa-xmark");
+                icon.classList.add("fa-bars");
+
+                menuBtn.setAttribute(
+                    "aria-label",
+                    "Open menu"
+                );
+
+            });
+
         });
+
+
+        /* =========================================
+           THEME
+           ========================================= */
+
+        const themeBtn = document.getElementById("themeBtn");
+
+        const savedTheme = localStorage.getItem("theme");
+
+        if (savedTheme === "light") {
+
+            document.body.classList.add("light-theme");
+
+        }
+
+
+        themeBtn.addEventListener("click", () => {
+
+            document.body.classList.toggle("light-theme");
+
+            if (
+                document.body.classList.contains("light-theme")
+            ) {
+
+                localStorage.setItem("theme", "light");
+
+            } else {
+
+                localStorage.setItem("theme", "dark");
+
+            }
+
+        });
+
+
+        /* =========================================
+           ACTIVE NAVIGATION
+           ========================================= */
+
+        const homeLink = document.getElementById("homeLink");
+        const moviesLink = document.getElementById("moviesLink");
+        const aboutLink = document.getElementById("aboutLink");
+
+        const moviesSection = document.getElementById("movies");
+
+
+        function setActiveLink(link) {
+
+            homeLink.classList.remove("active");
+            moviesLink.classList.remove("active");
+            aboutLink.classList.remove("active");
+
+            link.classList.add("active");
+
+        }
+
+
+        /*
+         * Only run this section on the home page.
+         *
+         * Your Flask application has:
+         *
+         * /
+         *
+         * for Home + Movies section.
+         */
+
+        if (
+            moviesSection &&
+            "{{ request.endpoint }}" === "home"
+        ) {
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+
+                    entries.forEach((entry) => {
+
+                        if (entry.isIntersecting) {
+
+                            setActiveLink(moviesLink);
+
+                        } else {
+
+                            /*
+                             * When Movies section is no longer
+                             * visible, Home becomes active.
+                             */
+
+                            setActiveLink(homeLink);
+
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: 0.25
+                }
+            );
+
+            observer.observe(moviesSection);
+
+        }
+
+
+        /* =========================================
+           HANDLE HOME LINK
+           ========================================= */
+
+        homeLink.addEventListener("click", () => {
+
+            if ("{{ request.endpoint }}" === "home") {
+
+                setActiveLink(homeLink);
+
+            }
+
+        });
+
+
+        /* =========================================
+           HANDLE MOVIES LINK
+           ========================================= */
+
+        moviesLink.addEventListener("click", () => {
+
+            if ("{{ request.endpoint }}" === "home") {
+
+                setActiveLink(moviesLink);
+
+            }
+
+        });
+
     </script>
+
+
     {% block extra_js %}
-    
     {% endblock %}
+
 </body>
 
 </html>

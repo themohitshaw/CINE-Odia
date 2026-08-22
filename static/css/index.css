@@ -1,0 +1,2603 @@
+/* =========================================
+   CINE-ODIA MOVIE PAGE
+   ========================================= */
+
+
+/* =========================================
+   ROOT / MOVIE PAGE COLORS
+   ========================================= */
+
+/*
+   IMPORTANT:
+   --primary comes from base.css / base.html.
+   Do NOT change --primary here.
+*/
+
+:root {
+    --movie-section-bg: #080b10;
+    --movie-text: #ffffff;
+    --movie-heading: #ffffff;
+    --movie-muted: rgba(255, 255, 255, .55);
+
+    --movie-border: rgba(255, 255, 255, .14);
+
+    --movie-input-bg: rgba(255, 255, 255, .055);
+    --movie-input-focus-bg: rgba(255, 255, 255, .08);
+
+    --movie-search-icon-bg: rgba(255, 255, 255, .07);
+    --movie-search-icon-color: rgba(255, 255, 255, .55);
+    --movie-search-icon-focus-bg: rgba(255, 255, 255, .10);
+
+    --movie-input-text: #ffffff;
+    --movie-input-placeholder: rgba(255, 255, 255, .42);
+
+    --movie-empty-bg: rgba(255, 255, 255, .025);
+}
+
+
+/* =========================================
+   LIGHT MODE
+   ========================================= */
+
+/*
+   Light mode only changes the movie
+   exploration section colors.
+
+   The --primary color remains unchanged.
+*/
+
+body.light-mode .movie-explore-section,
+body.light-theme .movie-explore-section,
+body[data-theme="light"] .movie-explore-section,
+html.light-mode .movie-explore-section,
+html.light-theme .movie-explore-section,
+html[data-theme="light"] .movie-explore-section {
+
+    --movie-section-bg: #f5f7fa;
+    --movie-text: #18202a;
+    --movie-heading: #121820;
+    --movie-muted: #667085;
+
+    --movie-border: rgba(15, 23, 42, .12);
+
+    --movie-input-bg: rgba(255, 255, 255, .85);
+    --movie-input-focus-bg: #ffffff;
+
+    --movie-search-icon-bg: #eef1f5;
+    --movie-search-icon-color: #667085;
+    --movie-search-icon-focus-bg: #e8edf3;
+
+    --movie-input-text: #18202a;
+    --movie-input-placeholder: #8a94a3;
+
+    --movie-empty-bg: rgba(15, 23, 42, .025);
+}
+
+
+/* =========================================
+   BANNER SECTION
+   ========================================= */
+
+/* Main banner wrapper */
+
+.cine-banner {
+    width: 100%;
+    overflow: hidden;
+    background: var(--page-bg, #080b10);
+}
+
+
+/* Main banner container */
+
+.cine-main {
+    position: relative;
+    width: 100%;
+    min-height: 720px;
+    overflow: hidden;
+    isolation: isolate;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================
+   BANNER BACKGROUND IMAGE
+   ========================================= */
+
+/* Animated background image layer */
+
+.cine-image-layer {
+    position: absolute;
+    inset: 0;
+
+    z-index: 1;
+
+    width: 100%;
+    height: 100%;
+
+    background-image: url("../images/Main-Banner.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    transform: scale(1.03);
+
+    animation:
+        cinematicZoom 18s ease-in-out infinite alternate;
+}
+
+
+/* Background cinematic zoom animation */
+
+@keyframes cinematicZoom {
+
+    0% {
+        transform: scale(1.03);
+    }
+
+    100% {
+        transform: scale(1.09);
+    }
+}
+
+
+/* =========================================
+   BANNER OVERLAY
+   ========================================= */
+
+/* Dark vertical overlay */
+
+.cine-overlay {
+    position: absolute;
+    inset: 0;
+
+    z-index: 2;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, .72) 0%,
+            rgba(0, 0, 0, .40) 30%,
+            rgba(0, 0, 0, .45) 60%,
+            rgba(0, 0, 0, .92) 100%
+        );
+}
+
+
+/* Horizontal cinematic overlay */
+
+.cine-overlay::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, .72) 0%,
+            transparent 35%,
+            transparent 65%,
+            rgba(0, 0, 0, .50) 100%
+        );
+}
+
+
+/* =========================================
+   BANNER LIGHT EFFECTS
+   ========================================= */
+
+/* Common light effect */
+
+.cine-light {
+    position: absolute;
+
+    z-index: 3;
+
+    width: 450px;
+    height: 450px;
+
+    border-radius: 50%;
+
+    background: var(--primary);
+
+    opacity: .08;
+
+    filter: blur(100px);
+
+    pointer-events: none;
+}
+
+
+/* Top-left light */
+
+.cine-light.one {
+    top: -220px;
+    left: -180px;
+}
+
+
+/* Bottom-right light */
+
+.cine-light.two {
+    right: -220px;
+    bottom: -250px;
+
+    opacity: .06;
+}
+
+
+/* =========================================
+   BANNER GRID
+   ========================================= */
+
+/* Cinematic background grid */
+
+.cine-grid {
+    position: absolute;
+    inset: 0;
+
+    z-index: 3;
+
+    pointer-events: none;
+
+    opacity: .05;
+
+    background-image:
+        linear-gradient(
+            rgba(255, 255, 255, .35) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255, 255, 255, .35) 1px,
+            transparent 1px
+        );
+
+    background-size: 55px 55px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent
+        );
+}
+
+
+/* =========================================
+   RECOMMENDATION CONTENT
+   ========================================= */
+
+/* Main recommendation content wrapper */
+
+.cine-recommendation {
+    position: relative;
+
+    z-index: 10;
+
+    width: min(900px, 92%);
+
+    margin: 0 auto;
+    padding: 55px 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   MOVIE DISCOVERY BADGE
+   ========================================= */
+
+.cine-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-bottom: 18px;
+    padding: 8px 15px;
+
+    border: 1px solid rgba(255, 255, 255, .20);
+    border-radius: 50px;
+
+    background: rgba(255, 255, 255, .08);
+
+    color: rgba(255, 255, 255, .90);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, .20);
+
+    animation:
+        fadeDown .8s ease both;
+}
+
+
+/* Badge icon */
+
+.cine-badge i {
+    color: var(--primary);
+    font-size: 13px;
+}
+
+
+/* =========================================
+   RECOMMENDATION TITLE
+   ========================================= */
+
+.cine-recommendation-title {
+    margin: 0;
+
+    color: #fff;
+
+    font-size: clamp(32px, 5vw, 58px);
+    font-weight: 900;
+
+    line-height: 1.05;
+    letter-spacing: -2px;
+
+    text-shadow:
+        0 5px 25px rgba(0, 0, 0, .45);
+
+    animation:
+        titleReveal .9s ease both;
+}
+
+
+/* Highlighted title text */
+
+.cine-recommendation-title span {
+    position: relative;
+
+    display: inline-block;
+
+    color: var(--primary);
+}
+
+
+/* Animated underline */
+
+.cine-recommendation-title span::after {
+    content: "";
+
+    position: absolute;
+
+    left: 4%;
+    right: 4%;
+    bottom: -7px;
+
+    height: 3px;
+
+    border-radius: 20px;
+
+    background: var(--primary);
+
+    opacity: .8;
+
+    transform: scaleX(0);
+    transform-origin: left;
+
+    animation:
+        underlineReveal 1s ease .7s forwards;
+}
+
+
+/* =========================================
+   RECOMMENDATION SUBTITLE
+   ========================================= */
+
+.cine-recommendation-subtitle {
+    max-width: 650px;
+
+    margin: 20px auto 28px;
+
+    color: rgba(255, 255, 255, .78);
+
+    font-size: 15px;
+    line-height: 1.7;
+
+    animation:
+        fadeUp 1s ease .2s both;
+}
+
+
+/* =========================================
+   MOVIE PREFERENCE BOX
+   ========================================= */
+
+/* Main glassmorphism preference card */
+
+.movie-preference-box {
+    position: relative;
+
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+    padding: 25px;
+
+    border: 1px solid rgba(255, 255, 255, .20);
+    border-radius: 26px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, .12),
+            rgba(255, 255, 255, .045)
+        );
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, .40),
+        inset 0 1px 1px rgba(255, 255, 255, .15);
+
+    animation:
+        cardReveal .9s ease .3s both;
+}
+
+
+/* Decorative top line */
+
+.movie-preference-box::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 12%;
+
+    width: 76%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, .55),
+            transparent
+        );
+}
+
+
+/* =========================================
+   PREFERENCE HEADER
+   ========================================= */
+
+/* Header layout */
+
+.preference-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+
+    text-align: left;
+}
+
+
+/* Favorite movie heading */
+
+.preference-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin: 0;
+
+    color: #fff;
+
+    font-size: 15px;
+    font-weight: 750;
+}
+
+
+/* Heading icon */
+
+.preference-heading i {
+    display: grid;
+    place-items: center;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, .10);
+
+    color: var(--primary);
+
+    font-size: 14px;
+}
+
+
+/* Movie counter */
+
+.preference-counter {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 7px 11px;
+
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 50px;
+
+    background: rgba(255, 255, 255, .06);
+
+    color: rgba(255, 255, 255, .65);
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* Counter icon */
+
+.preference-counter i {
+    color: var(--primary);
+}
+
+
+/* =========================================
+   MOVIE INPUTS
+   ========================================= */
+
+/* Input grid */
+
+.movie-inputs {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+
+    width: 100%;
+
+    margin: 0 auto;
+}
+
+
+/* Individual movie field */
+
+.movie-field {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+    height: 58px;
+
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 15px;
+
+    background: rgba(255, 255, 255, .065);
+
+    overflow: hidden;
+
+    transition:
+        border-color .3s ease,
+        background .3s ease,
+        box-shadow .3s ease,
+        transform .3s ease;
+
+    animation:
+        fieldReveal .45s ease both;
+}
+
+
+/* Primary-color focus indicator */
+
+.movie-field::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 15%;
+
+    width: 2px;
+    height: 70%;
+
+    border-radius: 10px;
+
+    background: var(--primary);
+
+    opacity: 0;
+
+    transition: .3s ease;
+}
+
+
+/* Hover state */
+
+.movie-field:hover {
+    border-color: rgba(255, 255, 255, .32);
+
+    background: rgba(255, 255, 255, .10);
+
+    transform: translateY(-2px);
+}
+
+
+/* Focus state */
+
+.movie-field:focus-within {
+    border-color: var(--primary);
+
+    background: rgba(255, 255, 255, .12);
+
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, .05),
+        0 10px 30px rgba(0, 0, 0, .20);
+}
+
+
+/* Show focus indicator */
+
+.movie-field:focus-within::before {
+    opacity: 1;
+}
+
+
+/* =========================================
+   MOVIE NUMBER
+   ========================================= */
+
+.movie-number {
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    width: 34px;
+    height: 34px;
+
+    margin-left: 10px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, .10);
+
+    color: rgba(255, 255, 255, .80);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    transition: .3s ease;
+}
+
+
+/* Active movie number */
+
+.movie-field:focus-within .movie-number {
+    background: var(--primary);
+
+    color: #fff;
+
+    transform: scale(1.05);
+}
+
+
+/* =========================================
+   MOVIE INPUT
+   ========================================= */
+
+.movie-field input {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+
+    padding: 0 12px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #fff;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* Input placeholder */
+
+.movie-field input::placeholder {
+    color: rgba(255, 255, 255, .50);
+}
+
+
+/* =========================================
+   REMOVE MOVIE BUTTON
+   ========================================= */
+
+.remove-movie {
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    width: 30px;
+    height: 30px;
+
+    margin-right: 9px;
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, .07);
+
+    color: rgba(255, 255, 255, .55);
+
+    cursor: pointer;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition:
+        opacity .25s ease,
+        background .25s ease,
+        color .25s ease,
+        transform .25s ease;
+}
+
+
+/* Display remove button */
+
+.movie-field:hover .remove-movie,
+.movie-field:focus-within .remove-movie {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+/* Remove button hover */
+
+.remove-movie:hover {
+    background: rgba(255, 60, 60, .85);
+
+    color: #fff;
+
+    transform: rotate(90deg);
+}
+
+
+/* =========================================
+   PREFERENCE BUTTONS
+   ========================================= */
+
+/* Button container */
+
+.preference-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    width: 100%;
+
+    margin-top: 18px;
+}
+
+
+/* Common button style */
+
+.preference-btn {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    min-height: 48px;
+
+    padding: 0 22px;
+
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 13px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    transition:
+        transform .3s ease,
+        background .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+}
+
+
+/* =========================================
+   ADD MOVIE BUTTON
+   ========================================= */
+
+.add-movie-btn {
+    background: rgba(255, 255, 255, .08);
+
+    color: #fff;
+}
+
+
+/* Add button hover */
+
+.add-movie-btn:hover {
+    background: rgba(255, 255, 255, .15);
+
+    border-color: rgba(255, 255, 255, .35);
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, .20);
+}
+
+
+/* Add icon animation */
+
+.add-movie-btn i {
+    transition: transform .3s ease;
+}
+
+
+.add-movie-btn:hover i {
+    transform: rotate(90deg);
+}
+
+
+/* =========================================
+   SUGGESTION BUTTON
+   ========================================= */
+
+/*
+   IMPORTANT:
+   This button remains RED because it uses
+   the --primary variable from base.css.
+*/
+
+.suggestion-btn {
+    min-width: 185px;
+
+    border: none;
+
+    background: var(--primary);
+
+    color: #fff;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .25);
+}
+
+
+/* Suggestion button hover */
+
+.suggestion-btn:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, .35);
+}
+
+
+/* Suggestion icon animation */
+
+.suggestion-btn i {
+    transition: transform .3s ease;
+}
+
+
+.suggestion-btn:hover i {
+    transform:
+        rotate(12deg)
+        scale(1.12);
+}
+
+
+/* =========================================
+   BUTTON STATES
+   ========================================= */
+
+/* Click state */
+
+.preference-btn:active {
+    transform: scale(.96);
+}
+
+
+/* Disabled state */
+
+.preference-btn:disabled {
+    opacity: .5;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================================
+   MOVIE LIMIT INFORMATION
+   ========================================= */
+
+.movie-limit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    margin: 13px 0 0;
+
+    color: rgba(255, 255, 255, .50);
+
+    font-size: 11px;
+}
+
+
+/* Limit icon */
+
+.movie-limit i {
+    font-size: 10px;
+
+    color: var(--primary);
+}
+
+
+/* =========================================
+   BOTTOM INFORMATION
+   ========================================= */
+
+.cine-bottom-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 25px;
+
+    margin-top: 25px;
+
+    color: rgba(255, 255, 255, .55);
+
+    font-size: 11px;
+
+    animation:
+        fadeUp 1s ease .5s both;
+}
+
+
+/* Individual information item */
+
+.cine-info-item {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+
+/* Information icon */
+
+.cine-info-item i {
+    color: var(--primary);
+}
+
+
+/* Information divider */
+
+.cine-info-divider {
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, .35);
+}
+
+
+/* =========================================
+   CORNER DECORATIONS
+   ========================================= */
+
+.cine-corner {
+    position: absolute;
+
+    z-index: 5;
+
+    width: 80px;
+    height: 80px;
+
+    pointer-events: none;
+
+    opacity: .35;
+}
+
+
+/* Top-left corner */
+
+.cine-corner.top-left {
+    top: 25px;
+    left: 25px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, .30);
+
+    border-left:
+        1px solid rgba(255, 255, 255, .30);
+}
+
+
+/* Bottom-right corner */
+
+.cine-corner.bottom-right {
+    right: 25px;
+    bottom: 25px;
+
+    border-right:
+        1px solid rgba(255, 255, 255, .30);
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, .30);
+}
+
+
+/* =========================================
+   EXPLORE MOVIES SECTION
+   ========================================= */
+
+.movie-explore-section {
+    width: 100%;
+
+    padding: 65px 5%;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background: var(--movie-section-bg);
+
+    color: var(--movie-text);
+
+    transition:
+        background .3s ease,
+        color .3s ease;
+}
+
+
+/* Decorative primary-color glow */
+
+.movie-explore-section::before {
+    content: "";
+
+    position: absolute;
+
+    top: -180px;
+    left: -150px;
+
+    width: 400px;
+    height: 400px;
+
+    border-radius: 50%;
+
+    background: var(--primary);
+
+    opacity: .045;
+
+    filter: blur(100px);
+
+    pointer-events: none;
+}
+
+
+/* Explore content container */
+
+.movie-explore-container {
+    position: relative;
+
+    z-index: 2;
+
+    width: min(1250px, 100%);
+
+    margin: 0 auto;
+}
+
+
+/* =========================================
+   EXPLORE HEADER
+   ========================================= */
+
+.movie-explore-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 35px;
+
+    animation:
+        exploreHeaderReveal .8s ease both;
+}
+
+
+/* Header text wrapper */
+
+.movie-explore-heading-wrapper {
+    min-width: 0;
+}
+
+
+/* Collection label */
+
+.movie-explore-label {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 9px;
+
+    color: var(--primary);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+}
+
+
+/* Label icon */
+
+.movie-explore-label i {
+    font-size: 12px;
+}
+
+
+/* Explore title */
+
+.movie-explore-title {
+    margin: 0;
+
+    color: var(--movie-heading);
+
+    font-size: clamp(27px, 4vw, 42px);
+
+    font-weight: 900;
+
+    line-height: 1.1;
+
+    letter-spacing: -1.2px;
+}
+
+
+/* Highlighted title text */
+
+.movie-explore-title span {
+    color: var(--primary);
+}
+
+
+/* Explore description */
+
+.movie-explore-description {
+    margin: 9px 0 0;
+
+    color: var(--movie-muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   MOVIE SEARCH FORM
+   ========================================= */
+
+.movie-search-form {
+    display: flex;
+    align-items: center;
+
+    flex-shrink: 0;
+
+    width: min(430px, 100%);
+    height: 55px;
+
+    padding: 5px;
+
+    border: 1px solid var(--movie-border);
+    border-radius: 16px;
+
+    background: var(--movie-input-bg);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, .20),
+        inset 0 1px 1px rgba(255, 255, 255, .08);
+
+    transition:
+        border-color .3s ease,
+        background .3s ease,
+        box-shadow .3s ease,
+        transform .3s ease;
+}
+
+
+/* Search form focus */
+
+.movie-search-form:focus-within {
+    border-color: var(--primary);
+
+    background: var(--movie-input-focus-bg);
+
+    box-shadow:
+        0 0 0 4px rgba(128, 128, 128, .08),
+        0 18px 50px rgba(0, 0, 0, .28);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   SEARCH ICON
+   ========================================= */
+
+.movie-search-icon {
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    width: 42px;
+    height: 42px;
+
+    margin-left: 1px;
+
+    border-radius: 12px;
+
+    background: var(--movie-search-icon-bg);
+
+    color: var(--movie-search-icon-color);
+
+    font-size: 14px;
+
+    transition: .3s ease;
+}
+
+
+/* Search icon focus state */
+
+.movie-search-form:focus-within .movie-search-icon {
+    color: var(--primary);
+
+    background:
+        var(--movie-search-icon-focus-bg);
+}
+
+
+/* =========================================
+   SEARCH INPUT
+   ========================================= */
+
+.movie-search-input {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+
+    padding: 0 13px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: var(--movie-input-text);
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* Search placeholder */
+
+.movie-search-input::placeholder {
+    color: var(--movie-input-placeholder);
+}
+
+
+/* =========================================
+   SEARCH BUTTON
+   ========================================= */
+
+.movie-search-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    flex-shrink: 0;
+
+    height: 43px;
+
+    padding: 0 17px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: var(--primary);
+
+    color: #fff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+}
+
+
+/* Search button hover */
+
+.movie-search-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, .30);
+}
+
+
+/* Search button click */
+
+.movie-search-button:active {
+    transform: scale(.96);
+}
+
+
+/* Search loading state */
+
+.movie-search-button.loading {
+    pointer-events: none;
+
+    opacity: .75;
+}
+
+
+/* =========================================
+   SEARCH ERROR
+   ========================================= */
+
+.movie-search-error {
+    display: none;
+
+    margin: -20px 0 25px;
+
+    color: #ff7777;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    animation:
+        searchErrorReveal .3s ease both;
+}
+
+
+/* Visible error */
+
+.movie-search-error.show {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+
+/* =========================================
+   SEARCH RESULTS
+   ========================================= */
+
+.movie-search-results {
+    width: 100%;
+
+    min-height: 100px;
+}
+
+
+/* Empty search result */
+
+.movie-search-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 130px;
+
+    border: 1px dashed var(--movie-border);
+    border-radius: 18px;
+
+    background: var(--movie-empty-bg);
+
+    color: var(--movie-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+
+/* Badge entrance animation */
+
+@keyframes fadeDown {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* General bottom-up animation */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* Main title animation */
+
+@keyframes titleReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(20px)
+            scale(.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* Preference card animation */
+
+@keyframes cardReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(30px)
+            scale(.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* Movie input animation */
+
+@keyframes fieldReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* Title underline animation */
+
+@keyframes underlineReveal {
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+
+/* Explore header animation */
+
+@keyframes exploreHeaderReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* Search error animation */
+
+@keyframes searchErrorReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    /* Banner */
+
+    .cine-main {
+        min-height: 760px;
+    }
+
+
+    /* Recommendation */
+
+    .cine-recommendation {
+        width: min(720px, 92%);
+
+        padding: 55px 0;
+    }
+
+
+    /* Movie input grid */
+
+    .movie-inputs {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    /* Explore section */
+
+    .movie-explore-section {
+        padding: 55px 4%;
+    }
+
+
+    /* Explore header */
+
+    .movie-explore-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 25px;
+    }
+
+
+    /* Search form */
+
+    .movie-search-form {
+        width: 100%;
+    }
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    /* Banner */
+
+    .cine-main {
+        min-height: 850px;
+    }
+
+
+    /* Mobile background position */
+
+    .cine-image-layer {
+        background-position: 58% center;
+    }
+
+
+    /* Recommendation */
+
+    .cine-recommendation {
+        width: 94%;
+
+        padding: 40px 0;
+    }
+
+
+    /* Badge */
+
+    .cine-badge {
+        margin-bottom: 14px;
+
+        padding: 7px 12px;
+
+        font-size: 9px;
+    }
+
+
+    /* Title */
+
+    .cine-recommendation-title {
+        font-size: 32px;
+
+        letter-spacing: -1.2px;
+    }
+
+
+    /* Subtitle */
+
+    .cine-recommendation-subtitle {
+        max-width: 95%;
+
+        margin: 17px auto 22px;
+
+        font-size: 13px;
+    }
+
+
+    /* Preference box */
+
+    .movie-preference-box {
+        padding: 17px;
+
+        border-radius: 21px;
+    }
+
+
+    /* Preference header */
+
+    .preference-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+
+    /* Movie inputs */
+
+    .movie-inputs {
+        grid-template-columns: 1fr;
+
+        gap: 9px;
+    }
+
+
+    /* Movie field */
+
+    .movie-field {
+        height: 53px;
+    }
+
+
+    /* Buttons */
+
+    .preference-actions {
+        flex-direction: column;
+
+        gap: 9px;
+    }
+
+
+    .preference-btn {
+        width: 100%;
+    }
+
+
+    .suggestion-btn {
+        min-width: 0;
+    }
+
+
+    /* Bottom information */
+
+    .cine-bottom-info {
+        flex-wrap: wrap;
+
+        gap: 10px 15px;
+
+        margin-top: 20px;
+
+        font-size: 10px;
+    }
+
+
+    /* Hide dividers */
+
+    .cine-info-divider {
+        display: none;
+    }
+
+
+    /* Corner decorations */
+
+    .cine-corner {
+        width: 45px;
+        height: 45px;
+    }
+
+
+    .cine-corner.top-left {
+        top: 15px;
+        left: 15px;
+    }
+
+
+    .cine-corner.bottom-right {
+        right: 15px;
+        bottom: 15px;
+    }
+
+
+    /* Explore section */
+
+    .movie-explore-section {
+        padding: 45px 17px;
+    }
+
+
+    /* Explore header */
+
+    .movie-explore-header {
+        margin-bottom: 25px;
+
+        gap: 20px;
+    }
+
+
+    /* Explore title */
+
+    .movie-explore-title {
+        font-size: 28px;
+    }
+
+
+    /* Explore description */
+
+    .movie-explore-description {
+        font-size: 12px;
+    }
+
+
+    /* Search form */
+
+    .movie-search-form {
+        height: 52px;
+
+        padding: 4px;
+
+        border-radius: 14px;
+    }
+
+
+    /* Search icon */
+
+    .movie-search-icon {
+        width: 39px;
+        height: 39px;
+
+        border-radius: 10px;
+    }
+
+
+    /* Search input */
+
+    .movie-search-input {
+        padding: 0 9px;
+
+        font-size: 12px;
+    }
+
+
+    /* Search button */
+
+    .movie-search-button {
+        height: 40px;
+
+        padding: 0 14px;
+
+        border-radius: 10px;
+
+        font-size: 11px;
+    }
+
+
+    /* Hide search button text */
+
+    .movie-search-button span {
+        display: none;
+    }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 400px) {
+
+    /* Banner */
+
+    .cine-main {
+        min-height: 875px;
+    }
+
+
+    /* Recommendation */
+
+    .cine-recommendation {
+        width: 95%;
+
+        padding: 30px 0;
+    }
+
+
+    /* Title */
+
+    .cine-recommendation-title {
+        font-size: 28px;
+    }
+
+
+    /* Subtitle */
+
+    .cine-recommendation-subtitle {
+        font-size: 12px;
+    }
+
+
+    /* Preference box */
+
+    .movie-preference-box {
+        padding: 14px;
+    }
+
+
+    /* Preference heading */
+
+    .preference-heading {
+        font-size: 13px;
+    }
+
+
+    /* Counter */
+
+    .preference-counter {
+        font-size: 10px;
+    }
+
+
+    /* Movie field */
+
+    .movie-field {
+        height: 50px;
+    }
+
+
+    /* Movie number */
+
+    .movie-number {
+        width: 31px;
+        height: 31px;
+    }
+
+
+    /* Movie input */
+
+    .movie-field input {
+        font-size: 12px;
+    }
+
+
+    /* Hide bottom information */
+
+    .cine-bottom-info {
+        display: none;
+    }
+
+
+    /* Explore section */
+
+    .movie-explore-section {
+        padding: 38px 13px;
+    }
+
+
+    /* Explore title */
+
+    .movie-explore-title {
+        font-size: 25px;
+    }
+
+
+    /* Search input */
+
+    .movie-search-input {
+        font-size: 11px;
+    }
+
+
+    /* Search button */
+
+    .movie-search-button {
+        width: 40px;
+
+        padding: 0;
+    }
+}
+
+
+/* =========================================
+   REDUCED MOTION
+   ========================================= */
+
+/*
+   Disable animations for users who have
+   requested reduced motion in their system.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+
+    .cine-image-layer,
+    .cine-badge,
+    .cine-recommendation-title,
+    .cine-recommendation-subtitle,
+    .movie-preference-box,
+    .movie-field,
+    .cine-bottom-info,
+    .movie-explore-header {
+
+        animation: none !important;
+    }
+}
+
+/* =========================================================
+   CINE-ODIA MOVIE GRID
+   ========================================================= */
+
+.movie-search-results {
+    width: 100%;
+    max-width: 1450px;
+
+    margin: 35px auto 65px;
+    padding: 0 28px;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 24px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   MOVIE CARD
+   ========================================================= */
+
+.movie-card {
+    width: 100%;
+    height: 455px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    position: relative;
+
+    background: linear-gradient(
+        145deg,
+        #111820,
+        #0a0f14
+    );
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.25);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.movie-card:hover {
+    transform: translateY(-7px);
+
+    border-color:
+        rgba(52, 121, 189, 0.65);
+
+    box-shadow:
+        0 16px 35px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(38, 95, 152, 0.12);
+}
+
+
+/* =========================================================
+   POSTER
+   ========================================================= */
+
+.movie-card-poster {
+    width: 100%;
+    height: 245px;
+
+    flex-shrink: 0;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background: #080b10;
+}
+
+
+.movie-card-poster img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+
+    transition:
+        transform 0.45s ease,
+        filter 0.45s ease;
+}
+
+
+.movie-card:hover .movie-card-poster img {
+    transform: scale(1.05);
+
+    filter: brightness(0.84);
+}
+
+
+/* =========================================================
+   POSTER GRADIENT
+   ========================================================= */
+
+.movie-card-poster::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            transparent 55%,
+            rgba(7, 10, 14, 0.75) 100%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CINE-ODIA BADGE
+   ========================================================= */
+
+.movie-card-poster::before {
+    content: "CINE-ODIA";
+
+    position: absolute;
+
+    top: 10px;
+    left: 10px;
+
+    z-index: 2;
+
+    padding: 4px 7px;
+
+    border-radius: 5px;
+
+    background: rgba(5, 8, 12, 0.75);
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    color: #ffffff;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    backdrop-filter: blur(6px);
+}
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.movie-card-content {
+    flex: 1;
+
+    min-height: 0;
+
+    padding: 14px 16px 15px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.movie-card-title {
+    margin: 0 0 8px;
+
+    min-height: 42px;
+
+    color: #ffffff;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    line-height: 1.25;
+
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   MOVIE INFORMATION
+   ========================================================= */
+
+.movie-card-info {
+    margin: 2px 0;
+
+    color: #aeb7c2;
+
+    font-size: 12.5px;
+
+    line-height: 1.4;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.movie-card-info strong {
+    color: #e6ebf0;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   CAST
+   ========================================================= */
+
+.movie-card-info:nth-of-type(4) {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   CONTENT BUTTON
+   ========================================================= */
+
+.movie-card-button {
+    width: 100%;
+
+    height: 39px;
+
+    min-height: 39px;
+
+    margin-top: auto;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e53935,
+            #c62828
+        );
+
+    border: none;
+
+    border-radius: 7px;
+
+    text-decoration: none;
+
+    font-size: 12.5px;
+
+    font-weight: 700;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+
+.movie-card-button:hover {
+    transform: translateY(-1px);
+
+    background:
+        linear-gradient(
+            135deg,
+            #f04440,
+            #d32f2f
+        );
+
+    box-shadow:
+        0 7px 16px rgba(198, 40, 40, 0.3);
+}
+
+
+.movie-card-button i {
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   EMPTY RESULT
+   ========================================================= */
+
+.movie-search-empty {
+    grid-column: 1 / -1;
+
+    min-height: 250px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    color: #9ca7b3;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 14px;
+}
+
+
+.movie-search-empty i {
+    font-size: 40px;
+
+    color:
+        var(--primary-light, #3479bd);
+}
+
+
+.movie-search-empty span {
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1500px) {
+
+    .movie-search-results {
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+
+        gap: 22px;
+    }
+
+    .movie-card {
+        height: 450px;
+    }
+
+    .movie-card-poster {
+        height: 240px;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .movie-search-results {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 22px;
+
+        padding: 0 22px;
+    }
+
+    .movie-card {
+        height: 450px;
+    }
+
+    .movie-card-poster {
+        height: 240px;
+    }
+}
+
+
+/* =========================================================
+   SMALL TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .movie-search-results {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 18px;
+
+        padding: 0 18px;
+    }
+
+    .movie-card {
+        height: 445px;
+    }
+
+    .movie-card-poster {
+        height: 235px;
+    }
+
+    .movie-card-content {
+        padding: 13px 14px;
+    }
+
+    .movie-card-title {
+        font-size: 16px;
+
+        min-height: 40px;
+    }
+
+    .movie-card-info {
+        font-size: 12px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+    .movie-search-results {
+        grid-template-columns: 1fr;
+
+        max-width: 380px;
+
+        margin: 25px auto 50px;
+
+        padding: 0 15px;
+
+        gap: 18px;
+    }
+
+    .movie-card {
+        height: 470px;
+
+        border-radius: 13px;
+    }
+
+    .movie-card-poster {
+        height: 265px;
+    }
+
+    .movie-card-content {
+        padding: 14px 15px;
+    }
+
+    .movie-card-title {
+        font-size: 17px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .movie-search-results {
+        padding: 0 12px;
+    }
+
+    .movie-card {
+        height: 445px;
+    }
+
+    .movie-card-poster {
+        height: 245px;
+    }
+
+    .movie-card-content {
+        padding: 12px;
+    }
+
+    .movie-card-title {
+        font-size: 16px;
+    }
+
+    .movie-card-info {
+        font-size: 11.5px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .movie-card,
+    .movie-card-poster img,
+    .movie-card-button {
+        transition: none;
+    }
+
+    .movie-card:hover {
+        transform: none;
+    }
+
+    .movie-card:hover .movie-card-poster img {
+        transform: none;
+    }
+}
