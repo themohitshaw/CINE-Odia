@@ -4,7 +4,9 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>{% block title %}CINE-Odia{% endblock %}</title>
 
@@ -12,15 +14,22 @@
           type="image/png"
           href="{{ url_for('static', filename='favicon.png') }}">
 
+    <!-- Google Font -->
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
+    <!-- Font Awesome -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
+
     <style>
+
+        /* =========================================================
+           RESET
+        ========================================================= */
 
         * {
             margin: 0;
@@ -28,410 +37,673 @@
             box-sizing: border-box;
         }
 
+
+        /* =========================================================
+           ROOT VARIABLES
+        ========================================================= */
+
         :root {
+
             --primary: #ff3b3b;
             --heading: #ff3b3b;
+
             --background: #080c12;
             --navbar: #111827;
             --card: #172033;
+
             --text: #f8fafc;
             --muted: #a8b3c2;
+
             --border: rgba(148, 163, 184, 0.18);
         }
 
+
+        /* =========================================================
+           LIGHT THEME
+        ========================================================= */
+
         .light-theme {
+
             --background: #f8fafc;
             --navbar: #ffffff;
             --card: #ffffff;
+
             --text: #0f172a;
             --muted: #475569;
+
             --border: rgba(15, 23, 42, 0.12);
         }
+
+
+        /* =========================================================
+           HTML
+        ========================================================= */
 
         html {
             scroll-behavior: smooth;
         }
 
+
+        /* =========================================================
+           BODY
+        ========================================================= */
+
         body {
+
             font-family: "Poppins", sans-serif;
+
             background: var(--background);
             color: var(--text);
+
             min-height: 100vh;
+
             display: flex;
             flex-direction: column;
-            transition: background 0.5s ease, color 0.5s ease;
+
+            transition:
+                background 0.5s ease,
+                color 0.5s ease;
         }
 
-        /* =========================
+
+        /*
+        =========================================================
+        IMPORTANT
+
+        Never let the browser restore the previous scroll position
+        when opening/reloading a page.
+
+        This is especially important when the previous page was
+        scrolled down to the Explore / Movies / Search section.
+        =========================================================
+        */
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        /* =========================================================
            NAVBAR
-           ========================= */
+        ========================================================= */
 
         .navbar {
+
             width: 100%;
             height: 72px;
+
             display: flex;
             align-items: center;
+
             padding: 0 7%;
+
             background: var(--navbar);
+
             border-bottom: 1px solid var(--border);
+
             position: sticky;
             top: 0;
+
             z-index: 1000;
+
             transition:
                 background 0.5s ease,
                 border-color 0.5s ease,
                 box-shadow 0.5s ease;
         }
 
+
+        /* =========================================================
+           LOGO
+        ========================================================= */
+
         .logo {
+
             margin-bottom: 2px;
+
             display: flex;
             align-items: center;
+
             gap: 10px;
+
             text-decoration: none;
+
             color: var(--heading);
+
             font-size: 24px;
             font-weight: 700;
+
             letter-spacing: 1px;
+
             white-space: nowrap;
         }
 
+
         .logo img {
+
             width: 200px;
             height: 200px;
+
             object-fit: contain;
-            transition: transform 0.1s ease;
+
+            transition:
+                transform 0.1s ease;
         }
+
 
         .logo:hover img {
             transform: scale(1.08);
         }
 
-        /* =========================
+
+        /* =========================================================
            NAV LINKS
-           ========================= */
+        ========================================================= */
 
         .nav-links {
+
             display: flex;
             align-items: center;
+
             gap: 30px;
+
             list-style: none;
+
             margin-left: auto;
         }
 
+
         .nav-links li {
+
             display: flex;
             align-items: center;
         }
 
+
         .nav-links a {
+
             position: relative;
+
             text-decoration: none;
+
             color: var(--muted);
+
             font-size: 15px;
             font-weight: 500;
+
             padding: 8px 0;
-            transition: color 0.3s ease;
+
+            transition:
+                color 0.3s ease;
         }
+
 
         .nav-links a:hover {
             color: var(--heading);
         }
 
+
         .nav-links a.active {
             color: var(--heading);
         }
 
+
         .nav-links a::after {
+
             content: "";
+
             position: absolute;
+
             left: 50%;
             bottom: 0;
+
             width: 0;
             height: 2px;
+
             background: var(--heading);
+
             border-radius: 10px;
+
             transform: translateX(-50%);
-            transition: width 0.3s ease;
+
+            transition:
+                width 0.3s ease;
         }
+
 
         .nav-links a:hover::after,
         .nav-links a.active::after {
+
             width: 100%;
         }
 
-        /* =========================
+
+        /* =========================================================
            THEME BUTTON
-           ========================= */
+        ========================================================= */
 
         .theme-btn {
+
             position: relative;
+
             width: 32px;
             height: 32px;
+
             margin-left: 25px;
+
             padding: 0;
+
             border: none;
+
             background: transparent;
+
             color: var(--heading);
+
             display: flex;
+
             align-items: center;
             justify-content: center;
+
             cursor: pointer;
+
             overflow: hidden;
-            transition: transform 0.3s ease;
+
+            transition:
+                transform 0.3s ease;
         }
+
 
         .theme-btn:hover {
             transform: scale(1.1);
         }
 
+
         .theme-btn:active {
             transform: scale(0.85);
         }
 
+
         .theme-btn i {
+
             position: absolute;
+
             font-size: 25px;
+
             color: var(--heading);
+
             transition:
                 transform 0.5s ease,
                 opacity 0.4s ease;
         }
 
+
         .moon {
+
             opacity: 1;
-            transform: rotate(0deg) scale(1);
+
+            transform:
+                rotate(0deg)
+                scale(1);
         }
+
 
         .sun {
+
             opacity: 0;
-            transform: rotate(-180deg) scale(0);
+
+            transform:
+                rotate(-180deg)
+                scale(0);
         }
+
 
         .light-theme .moon {
+
             opacity: 0;
-            transform: rotate(180deg) scale(0);
+
+            transform:
+                rotate(180deg)
+                scale(0);
         }
+
 
         .light-theme .sun {
+
             opacity: 1;
-            transform: rotate(0deg) scale(1);
+
+            transform:
+                rotate(0deg)
+                scale(1);
         }
+
 
         .theme-btn:hover .moon {
-            transform: rotate(-20deg) scale(1.15);
+
+            transform:
+                rotate(-20deg)
+                scale(1.15);
         }
+
 
         .light-theme .theme-btn:hover .sun {
-            transform: rotate(20deg) scale(1.15);
+
+            transform:
+                rotate(20deg)
+                scale(1.15);
         }
 
-        /* =========================
-           MENU BUTTON
-           ========================= */
+
+        /* =========================================================
+           MOBILE MENU BUTTON
+        ========================================================= */
 
         .menu-btn {
+
             display: none;
+
             width: 32px;
             height: 32px;
+
             padding: 0;
+
             margin-left: 15px;
+
             border: none;
+
             background: transparent;
+
             color: var(--heading);
+
             align-items: center;
             justify-content: center;
+
             cursor: pointer;
-            transition: transform 0.3s ease;
+
+            transition:
+                transform 0.3s ease;
         }
 
+
         .menu-btn i {
+
             font-size: 22px;
+
             transition:
                 transform 0.4s ease,
                 opacity 0.3s ease;
         }
 
+
         .menu-btn:hover {
             transform: scale(1.1);
         }
+
 
         .menu-btn:active {
             transform: scale(0.85);
         }
 
-        /* =========================
+
+        /* =========================================================
            MAIN
-           ========================= */
+        ========================================================= */
 
         main {
+
             flex: 1;
+
             width: 100%;
         }
 
-        /* =========================
+
+        /* =========================================================
            FOOTER
-           ========================= */
+        ========================================================= */
 
         footer {
+
             width: 100%;
+
             background: var(--navbar);
+
             border-top: 1px solid var(--border);
+
             padding: 45px 7% 20px;
+
             transition:
                 background 0.5s ease,
                 border-color 0.5s ease;
         }
 
+
         .footer-container {
+
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
+
+            grid-template-columns:
+                2fr 1fr 1fr 1fr;
+
             gap: 40px;
+
             max-width: 1400px;
+
             margin: 0 auto;
         }
 
+
         .footer-logo {
+
             display: flex;
+
             align-items: center;
+
             gap: 10px;
+
             color: var(--heading);
+
             font-size: 23px;
             font-weight: 700;
+
             margin-bottom: 0;
         }
 
+
         .footer-logo img {
+
             width: 100px;
             height: 100px;
+
             object-fit: contain;
         }
+
 
         .footer-logo span {
             color: var(--heading);
         }
 
+
         .footer-about {
+
             max-width: 360px;
+
             color: var(--muted);
+
             font-size: 14px;
+
             line-height: 1.8;
         }
 
+
         .footer-title {
+
             color: var(--text);
+
             font-size: 16px;
             font-weight: 600;
+
             margin-bottom: 17px;
         }
 
+
         .footer-links {
+
             list-style: none;
         }
 
+
         .footer-links li {
+
             margin-bottom: 11px;
         }
 
+
         .footer-links a {
+
             color: var(--muted);
+
             text-decoration: none;
+
             font-size: 14px;
+
             transition:
                 color 0.3s ease,
                 transform 0.3s ease;
+
             display: inline-block;
         }
 
+
         .footer-links a:hover {
+
             color: var(--heading);
-            transform: translateX(4px);
+
+            transform:
+                translateX(4px);
         }
 
+
         .footer-bottom {
+
             max-width: 1400px;
+
             margin: 35px auto 0;
+
             padding-top: 20px;
+
             border-top: 1px solid var(--border);
+
             text-align: center;
+
             color: var(--muted);
+
             font-size: 13px;
         }
 
-        /* =========================
-           TABLET
-           ========================= */
 
-        @media(max-width: 900px) {
+        /* =========================================================
+           TABLET
+        ========================================================= */
+
+        @media (max-width: 900px) {
 
             .navbar {
                 padding: 0 5%;
             }
 
+
             .nav-links {
                 gap: 20px;
             }
+
 
             .theme-btn {
                 margin-left: 15px;
             }
 
+
             footer {
                 padding: 40px 5% 20px;
             }
+
 
             .footer-container {
                 grid-template-columns: 1fr 1fr;
             }
         }
 
-        /* =========================
-           MOBILE
-           ========================= */
 
-        @media(max-width: 768px) {
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 768px) {
 
             .navbar {
                 height: 68px;
             }
 
+
             .logo {
                 font-size: 21px;
             }
 
+
             .logo img {
+
                 width: 200px;
                 height: 200px;
             }
 
+
             .menu-btn {
+
                 display: flex;
+
                 order: 3;
             }
 
+
             .theme-btn {
+
                 width: 42px;
                 height: 42px;
+
                 margin-left: auto;
             }
 
+
             .nav-links {
+
                 position: absolute;
+
                 top: 68px;
                 left: 0;
+
                 width: 100%;
+
                 padding: 20px 5%;
+
                 background: var(--navbar);
-                border-bottom: 1px solid var(--border);
+
+                border-bottom:
+                    1px solid var(--border);
+
                 display: flex;
+
                 flex-direction: column;
+
                 align-items: flex-start;
+
                 gap: 0;
+
                 margin: 0;
 
                 opacity: 0;
+
                 visibility: hidden;
-                transform: translateY(-10px);
+
+                transform:
+                    translateY(-10px);
 
                 transition:
                     opacity 0.3s ease,
@@ -440,53 +712,76 @@
                     background 0.5s ease;
             }
 
+
             .nav-links.active {
+
                 opacity: 1;
+
                 visibility: visible;
-                transform: translateY(0);
+
+                transform:
+                    translateY(0);
             }
+
 
             .nav-links li {
                 width: 100%;
             }
 
+
             .nav-links a {
+
                 width: 100%;
+
                 padding: 12px 0;
             }
 
+
             .nav-links a::after {
+
                 left: 0;
+
                 bottom: 5px;
+
                 transform: none;
             }
 
+
             .nav-links a:hover::after,
             .nav-links a.active::after {
+
                 width: 45px;
             }
 
+
             .footer-container {
-                grid-template-columns: 1fr 1fr;
+
+                grid-template-columns:
+                    1fr 1fr;
+
                 gap: 30px;
             }
         }
 
-        /* =========================
-           SMALL MOBILE
-           ========================= */
 
-        @media(max-width: 500px) {
+        /* =========================================================
+           SMALL MOBILE
+        ========================================================= */
+
+        @media (max-width: 500px) {
 
             .footer-container {
                 grid-template-columns: 1fr;
             }
 
+
             .footer-about {
                 max-width: 100%;
             }
 
+
             .logo img {
+
                 width: 200px;
                 height: 200px;
             }
@@ -494,22 +789,26 @@
 
     </style>
 
+
     {% block extra_css %}
     {% endblock %}
 
 </head>
 
+
 <body>
 
-    <!-- =========================
+
+    <!-- =========================================================
          NAVBAR
-         ========================= -->
+    ========================================================= -->
 
     <header class="navbar">
 
-        <a href="{{ url_for('home') }}"
-           class="logo"
-           id="logoLink">
+        <a
+            href="{{ url_for('home') }}"
+            class="logo"
+            id="logoLink">
 
             <img
                 src="{{ url_for('static', filename='images/logo.png') }}"
@@ -518,40 +817,55 @@
         </a>
 
 
-        <ul class="nav-links" id="navLinks">
+        <ul
+            class="nav-links"
+            id="navLinks">
+
 
             <!-- HOME -->
 
             <li>
+
                 <a
                     href="{{ url_for('home') }}"
                     id="homeLink"
                     class="{% if request.endpoint == 'home' %}active{% endif %}">
+
                     Home
+
                 </a>
+
             </li>
 
 
             <!-- MOVIES -->
 
             <li>
+
                 <a
                     href="{{ url_for('home') }}#movies"
                     id="moviesLink">
+
                     Movies
+
                 </a>
+
             </li>
 
 
             <!-- ABOUT -->
 
             <li>
+
                 <a
                     href="#"
                     id="aboutLink"
                     class="{% if request.endpoint == 'about' %}active{% endif %}">
+
                     About
+
                 </a>
+
             </li>
 
         </ul>
@@ -562,19 +876,22 @@
         <button
             class="theme-btn"
             id="themeBtn"
+            type="button"
             aria-label="Toggle theme">
 
             <i class="fa-solid fa-moon moon"></i>
+
             <i class="fa-solid fa-sun sun"></i>
 
         </button>
 
 
-        <!-- MOBILE MENU BUTTON -->
+        <!-- MOBILE MENU -->
 
         <button
             class="menu-btn"
             id="menuBtn"
+            type="button"
             aria-label="Open menu">
 
             <i class="fa-solid fa-bars"></i>
@@ -584,9 +901,9 @@
     </header>
 
 
-    <!-- =========================
+    <!-- =========================================================
          PAGE CONTENT
-         ========================= -->
+    ========================================================= -->
 
     <main>
 
@@ -596,13 +913,14 @@
     </main>
 
 
-    <!-- =========================
+    <!-- =========================================================
          FOOTER
-         ========================= -->
+    ========================================================= -->
 
     <footer>
 
         <div class="footer-container">
+
 
             <div>
 
@@ -613,6 +931,7 @@
                         alt="CINE-Odia Logo">
 
                 </div>
+
 
                 <p class="footer-about">
 
@@ -634,9 +953,14 @@
                 <ul class="footer-links">
 
                     <li>
-                        <a href="{{ url_for('home') }}#movies">
+
+                        <a
+                            href="{{ url_for('home') }}#movies">
+
                             Movies
+
                         </a>
+
                     </li>
 
                 </ul>
@@ -653,21 +977,27 @@
                 <ul class="footer-links">
 
                     <li>
+
                         <a href="#">
                             About Us
                         </a>
+
                     </li>
 
                     <li>
+
                         <a href="#">
                             Contact
                         </a>
+
                     </li>
 
                     <li>
+
                         <a href="#">
                             Privacy
                         </a>
+
                     </li>
 
                 </ul>
@@ -684,21 +1014,27 @@
                 <ul class="footer-links">
 
                     <li>
+
                         <a href="#">
                             GitHub
                         </a>
+
                     </li>
 
                     <li>
+
                         <a href="#">
                             Instagram
                         </a>
+
                     </li>
 
                     <li>
+
                         <a href="#">
                             LinkedIn
                         </a>
+
                     </li>
 
                 </ul>
@@ -710,216 +1046,501 @@
 
         <div class="footer-bottom">
 
-            © 2026 CINE-Odia | Built by Team Future Builders
+            © 2026 CINE-Odia |
+            Built by Team Future Builders
 
         </div>
 
     </footer>
 
 
-    <!-- =========================
+    <!-- =========================================================
          JAVASCRIPT
-         ========================= -->
+    ========================================================= -->
 
     <script>
 
-        /* =========================================
-           MOBILE MENU
-           ========================================= */
-
-        const menuBtn = document.getElementById("menuBtn");
-        const navLinks = document.getElementById("navLinks");
-
-        menuBtn.addEventListener("click", () => {
-
-            navLinks.classList.toggle("active");
-
-            const icon = menuBtn.querySelector("i");
-
-            if (navLinks.classList.contains("active")) {
-
-                icon.classList.remove("fa-bars");
-                icon.classList.add("fa-xmark");
-
-                menuBtn.setAttribute(
-                    "aria-label",
-                    "Close menu"
-                );
-
-            } else {
-
-                icon.classList.remove("fa-xmark");
-                icon.classList.add("fa-bars");
-
-                menuBtn.setAttribute(
-                    "aria-label",
-                    "Open menu"
-                );
-
-            }
-
-        });
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
 
 
-        /* =========================================
-           CLOSE MOBILE MENU WHEN NAV LINK IS CLICKED
-           ========================================= */
+                /* =================================================
+                   MOBILE MENU
+                ================================================= */
 
-        const navItems = navLinks.querySelectorAll("a");
+                const menuBtn =
+                    document.getElementById("menuBtn");
 
-        navItems.forEach((link) => {
-
-            link.addEventListener("click", () => {
-
-                navLinks.classList.remove("active");
-
-                const icon = menuBtn.querySelector("i");
-
-                icon.classList.remove("fa-xmark");
-                icon.classList.add("fa-bars");
-
-                menuBtn.setAttribute(
-                    "aria-label",
-                    "Open menu"
-                );
-
-            });
-
-        });
+                const navLinks =
+                    document.getElementById("navLinks");
 
 
-        /* =========================================
-           THEME
-           ========================================= */
+                if (menuBtn && navLinks) {
 
-        const themeBtn = document.getElementById("themeBtn");
+                    menuBtn.addEventListener(
+                        "click",
+                        function () {
 
-        const savedTheme = localStorage.getItem("theme");
-
-        if (savedTheme === "light") {
-
-            document.body.classList.add("light-theme");
-
-        }
+                            navLinks.classList.toggle(
+                                "active"
+                            );
 
 
-        themeBtn.addEventListener("click", () => {
-
-            document.body.classList.toggle("light-theme");
-
-            if (
-                document.body.classList.contains("light-theme")
-            ) {
-
-                localStorage.setItem("theme", "light");
-
-            } else {
-
-                localStorage.setItem("theme", "dark");
-
-            }
-
-        });
+                            const icon =
+                                menuBtn.querySelector("i");
 
 
-        /* =========================================
-           ACTIVE NAVIGATION
-           ========================================= */
+                            if (
+                                navLinks.classList.contains(
+                                    "active"
+                                )
+                            ) {
 
-        const homeLink = document.getElementById("homeLink");
-        const moviesLink = document.getElementById("moviesLink");
-        const aboutLink = document.getElementById("aboutLink");
+                                icon.classList.remove(
+                                    "fa-bars"
+                                );
 
-        const moviesSection = document.getElementById("movies");
+                                icon.classList.add(
+                                    "fa-xmark"
+                                );
+
+                                menuBtn.setAttribute(
+                                    "aria-label",
+                                    "Close menu"
+                                );
+
+                            } else {
+
+                                icon.classList.remove(
+                                    "fa-xmark"
+                                );
+
+                                icon.classList.add(
+                                    "fa-bars"
+                                );
+
+                                menuBtn.setAttribute(
+                                    "aria-label",
+                                    "Open menu"
+                                );
+                            }
+
+                        }
+                    );
 
 
-        function setActiveLink(link) {
+                    /* CLOSE MOBILE MENU */
 
-            homeLink.classList.remove("active");
-            moviesLink.classList.remove("active");
-            aboutLink.classList.remove("active");
-
-            link.classList.add("active");
-
-        }
+                    const navItems =
+                        navLinks.querySelectorAll("a");
 
 
-        /*
-         * Only run this section on the home page.
-         *
-         * Your Flask application has:
-         *
-         * /
-         *
-         * for Home + Movies section.
-         */
+                    navItems.forEach(
+                        function (link) {
 
-        if (
-            moviesSection &&
-            "{{ request.endpoint }}" === "home"
-        ) {
+                            link.addEventListener(
+                                "click",
+                                function () {
 
-            const observer = new IntersectionObserver(
-                (entries) => {
+                                    navLinks.classList.remove(
+                                        "active"
+                                    );
 
-                    entries.forEach((entry) => {
 
-                        if (entry.isIntersecting) {
+                                    const icon =
+                                        menuBtn.querySelector(
+                                            "i"
+                                        );
 
-                            setActiveLink(moviesLink);
 
-                        } else {
+                                    icon.classList.remove(
+                                        "fa-xmark"
+                                    );
+
+                                    icon.classList.add(
+                                        "fa-bars"
+                                    );
+
+                                    menuBtn.setAttribute(
+                                        "aria-label",
+                                        "Open menu"
+                                    );
+
+                                }
+                            );
+
+                        }
+                    );
+
+                }
+
+
+                /* =================================================
+                   THEME
+                ================================================= */
+
+                const themeBtn =
+                    document.getElementById("themeBtn");
+
+
+                const savedTheme =
+                    localStorage.getItem("theme");
+
+
+                if (
+                    savedTheme === "light"
+                ) {
+
+                    document.body.classList.add(
+                        "light-theme"
+                    );
+                }
+
+
+                if (themeBtn) {
+
+                    themeBtn.addEventListener(
+                        "click",
+                        function () {
+
+                            document.body.classList.toggle(
+                                "light-theme"
+                            );
+
+
+                            if (
+                                document.body.classList.contains(
+                                    "light-theme"
+                                )
+                            ) {
+
+                                localStorage.setItem(
+                                    "theme",
+                                    "light"
+                                );
+
+                            } else {
+
+                                localStorage.setItem(
+                                    "theme",
+                                    "dark"
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* =================================================
+                   ACTIVE NAVIGATION
+                ================================================= */
+
+                const homeLink =
+                    document.getElementById("homeLink");
+
+                const moviesLink =
+                    document.getElementById("moviesLink");
+
+                const aboutLink =
+                    document.getElementById("aboutLink");
+
+                const moviesSection =
+                    document.getElementById("movies");
+
+
+                function setActiveLink(link) {
+
+                    if (homeLink) {
+                        homeLink.classList.remove(
+                            "active"
+                        );
+                    }
+
+                    if (moviesLink) {
+                        moviesLink.classList.remove(
+                            "active"
+                        );
+                    }
+
+                    if (aboutLink) {
+                        aboutLink.classList.remove(
+                            "active"
+                        );
+                    }
+
+                    if (link) {
+                        link.classList.add(
+                            "active"
+                        );
+                    }
+
+                }
+
+
+                /* =================================================
+                   MOVIES INTERSECTION OBSERVER
+                ================================================= */
+
+                if (
+                    moviesSection &&
+                    "{{ request.endpoint }}" === "home"
+                ) {
+
+                    const observer =
+                        new IntersectionObserver(
+                            function (entries) {
+
+                                entries.forEach(
+                                    function (entry) {
+
+                                        if (
+                                            entry.isIntersecting
+                                        ) {
+
+                                            setActiveLink(
+                                                moviesLink
+                                            );
+
+                                        } else {
+
+                                            setActiveLink(
+                                                homeLink
+                                            );
+
+                                        }
+
+                                    }
+                                );
+
+                            },
+                            {
+                                threshold: 0.25
+                            }
+                        );
+
+
+                    observer.observe(
+                        moviesSection
+                    );
+
+                }
+
+
+                /* =================================================
+                   HOME LINK
+                ================================================= */
+
+                if (homeLink) {
+
+                    homeLink.addEventListener(
+                        "click",
+                        function () {
 
                             /*
-                             * When Movies section is no longer
-                             * visible, Home becomes active.
+                             * IMPORTANT:
+                             * Always go to the TOP of Home.
                              */
 
-                            setActiveLink(homeLink);
+                            if (
+                                "{{ request.endpoint }}"
+                                === "home"
+                            ) {
+
+                                setActiveLink(
+                                    homeLink
+                                );
+
+
+                                history.replaceState(
+                                    null,
+                                    "",
+                                    window.location.pathname
+                                );
+
+
+                                window.scrollTo(
+                                    {
+                                        top: 0,
+                                        left: 0,
+                                        behavior: "smooth"
+                                    }
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* =================================================
+                   LOGO
+                ================================================= */
+
+                const logoLink =
+                    document.getElementById("logoLink");
+
+
+                if (logoLink) {
+
+                    logoLink.addEventListener(
+                        "click",
+                        function () {
+
+                            /*
+                             * Clicking CINE-Odia logo always
+                             * means HOME TOP.
+                             */
+
+                            if (
+                                "{{ request.endpoint }}"
+                                === "home"
+                            ) {
+
+                                history.replaceState(
+                                    null,
+                                    "",
+                                    window.location.pathname
+                                );
+
+
+                                window.scrollTo(
+                                    {
+                                        top: 0,
+                                        left: 0,
+                                        behavior: "smooth"
+                                    }
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* =================================================
+                   MOVIES LINK
+                ================================================= */
+
+                if (moviesLink) {
+
+                    moviesLink.addEventListener(
+                        "click",
+                        function () {
+
+                            if (
+                                "{{ request.endpoint }}"
+                                === "home"
+                            ) {
+
+                                setActiveLink(
+                                    moviesLink
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* =================================================
+                   IMPORTANT HOME PAGE SCROLL FIX
+                =================================================
+
+                   If the page is HOME and there is NO hash,
+                   always start at the top.
+
+                   Example:
+
+                       /
+                       
+                   should start at:
+
+                       TOP OF HOME
+
+                   NOT:
+
+                       #movies
+                       Explore
+                       Search section
+                ================================================= */
+
+                const isHomePage =
+                    "{{ request.endpoint }}" === "home";
+
+
+                const currentHash =
+                    window.location.hash;
+
+
+                if (
+                    isHomePage &&
+                    !currentHash
+                ) {
+
+                    /*
+                     * Disable browser automatic scroll restoration.
+                     */
+
+                    if ("scrollRestoration" in history) {
+
+                        history.scrollRestoration =
+                            "manual";
+                    }
+
+
+                    /*
+                     * Force page to top.
+                     */
+
+                    window.scrollTo(
+                        0,
+                        0
+                    );
+
+                }
+
+
+                /* =================================================
+                   HANDLE BROWSER BACK / FORWARD
+                ================================================= */
+
+                window.addEventListener(
+                    "pageshow",
+                    function () {
+
+                        /*
+                         * If Home has no hash, always restore TOP.
+                         */
+
+                        if (
+                            "{{ request.endpoint }}"
+                            === "home" &&
+                            !window.location.hash
+                        ) {
+
+                            window.scrollTo(
+                                0,
+                                0
+                            );
 
                         }
 
-                    });
+                    }
+                );
 
-                },
-                {
-                    threshold: 0.25
-                }
-            );
-
-            observer.observe(moviesSection);
-
-        }
-
-
-        /* =========================================
-           HANDLE HOME LINK
-           ========================================= */
-
-        homeLink.addEventListener("click", () => {
-
-            if ("{{ request.endpoint }}" === "home") {
-
-                setActiveLink(homeLink);
 
             }
-
-        });
-
-
-        /* =========================================
-           HANDLE MOVIES LINK
-           ========================================= */
-
-        moviesLink.addEventListener("click", () => {
-
-            if ("{{ request.endpoint }}" === "home") {
-
-                setActiveLink(moviesLink);
-
-            }
-
-        });
+        );
 
     </script>
 
