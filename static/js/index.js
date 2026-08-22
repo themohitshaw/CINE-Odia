@@ -780,3 +780,537 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       MOVIE PAGINATION
+    ===================================================== */
+
+    const movieContainer =
+        document.getElementById("movieSearchResults");
+
+    const pagination =
+        document.getElementById("moviePagination");
+
+    const paginationNumbers =
+        document.getElementById("paginationNumbers");
+
+    const previousButton =
+        document.getElementById("prevPage");
+
+    const nextButton =
+        document.getElementById("nextPage");
+
+
+    /* If movie section does not exist, stop */
+
+    if (
+        !movieContainer ||
+        !pagination ||
+        !paginationNumbers
+    ) {
+        return;
+    }
+
+
+    /* =====================================================
+       GET ALL MOVIE CARDS
+    ===================================================== */
+
+    const movieCards =
+        Array.from(
+            movieContainer.querySelectorAll(".movie-card")
+        );
+
+
+    /* =====================================================
+       SETTINGS
+    ===================================================== */
+
+    const moviesPerPage = 10;
+
+    let currentPage = 1;
+
+    const totalMovies = movieCards.length;
+
+    const totalPages =
+        Math.ceil(totalMovies / moviesPerPage);
+
+
+    /* =====================================================
+       NO MOVIES
+    ===================================================== */
+
+    if (totalMovies === 0) {
+
+        pagination.style.display = "none";
+
+        return;
+    }
+
+
+    /* =====================================================
+       SHOW MOVIES
+    ===================================================== */
+
+    function showPage(page) {
+
+        currentPage = page;
+
+
+        /* Calculate range */
+
+        const start =
+            (currentPage - 1) * moviesPerPage;
+
+        const end =
+            start + moviesPerPage;
+
+
+        /* Hide all cards */
+
+        movieCards.forEach(function (card) {
+
+            card.classList.add(
+                "pagination-hidden"
+            );
+
+        });
+
+
+        /* Show current page cards */
+
+        movieCards
+            .slice(start, end)
+            .forEach(function (card) {
+
+                card.classList.remove(
+                    "pagination-hidden"
+                );
+
+            });
+
+
+        /* Update page buttons */
+
+        createPageButtons();
+
+
+        /* Update Previous / Next */
+
+        updateNavigation();
+
+
+        /* Scroll to movie section */
+
+        const movieSection =
+            document.getElementById("movies");
+
+        if (movieSection) {
+
+            movieSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CREATE PAGE NUMBERS
+    ===================================================== */
+
+    function createPageButtons() {
+
+        paginationNumbers.innerHTML = "";
+
+
+        for (
+            let page = 1;
+            page <= totalPages;
+            page++
+        ) {
+
+            const button =
+                document.createElement("button");
+
+
+            button.type = "button";
+
+            button.className =
+                "pagination-btn";
+
+
+            button.textContent = page;
+
+
+            /* Active page */
+
+            if (page === currentPage) {
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            /* Click */
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    showPage(page);
+
+                }
+            );
+
+
+            paginationNumbers.appendChild(
+                button
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       PREVIOUS / NEXT
+    ===================================================== */
+
+    function updateNavigation() {
+
+        /* Previous */
+
+        previousButton.disabled =
+            currentPage === 1;
+
+
+        /* Next */
+
+        nextButton.disabled =
+            currentPage === totalPages;
+
+    }
+
+
+    /* =====================================================
+       PREVIOUS BUTTON
+    ===================================================== */
+
+    previousButton.addEventListener(
+        "click",
+        function () {
+
+            if (currentPage > 1) {
+
+                showPage(
+                    currentPage - 1
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       NEXT BUTTON
+    ===================================================== */
+
+    nextButton.addEventListener(
+        "click",
+        function () {
+
+            if (currentPage < totalPages) {
+
+                showPage(
+                    currentPage + 1
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIAL PAGE
+    ===================================================== */
+
+    showPage(1);
+
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const searchInput = document.getElementById("movieSearchInput");
+    const suggestionsBox = document.getElementById("movieSearchSuggestions");
+
+    if (!searchInput || !suggestionsBox) {
+        return;
+    }
+
+    // Remove duplicate movie titles
+    const movies = [...new Set(movieTitles || [])]
+        .filter(title => title && title.trim() !== "")
+        .sort((a, b) => a.localeCompare(b));
+
+
+
+    // =========================================
+    // SHOW MOVIE SUGGESTIONS
+    // =========================================
+
+    function showSuggestions(searchValue) {
+
+        suggestionsBox.innerHTML = "";
+
+        const query = searchValue.trim().toLowerCase();
+
+        // Don't show anything when input is empty
+        if (!query) {
+            suggestionsBox.classList.remove("show");
+            return;
+        }
+
+
+        // Find matching movies
+        const matches = movies
+            .filter(title =>
+                title.toLowerCase().includes(query)
+            )
+            .slice(0, 8);
+
+
+        // No results
+        if (matches.length === 0) {
+
+            suggestionsBox.classList.remove("show");
+
+            return;
+        }
+
+
+        // Create suggestion items
+        matches.forEach(title => {
+
+            const suggestion = document.createElement("button");
+
+            suggestion.type = "button";
+            suggestion.className = "movie-suggestion-item";
+
+            suggestion.setAttribute("role", "option");
+
+
+            // Highlight searched text
+            const titleHTML = highlightMatch(title, query);
+
+
+            suggestion.innerHTML = `
+                <span class="movie-suggestion-icon">
+                    <i class="fa-solid fa-film"></i>
+                </span>
+
+                <span class="movie-suggestion-title">
+                    ${titleHTML}
+                </span>
+
+                <span class="movie-suggestion-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </span>
+            `;
+
+
+            // Click suggestion
+            suggestion.addEventListener("click", () => {
+
+                searchInput.value = title;
+
+                suggestionsBox.innerHTML = "";
+                suggestionsBox.classList.remove("show");
+
+                searchInput.focus();
+
+            });
+
+
+            suggestionsBox.appendChild(suggestion);
+
+        });
+
+
+        suggestionsBox.classList.add("show");
+    }
+
+
+
+    // =========================================
+    // HIGHLIGHT SEARCH TEXT
+    // =========================================
+
+    function highlightMatch(title, query) {
+
+        const escapedQuery = query.replace(
+            /[.*+?^${}()|[\]\\]/g,
+            "\\$&"
+        );
+
+        const regex = new RegExp(
+            `(${escapedQuery})`,
+            "gi"
+        );
+
+        return escapeHTML(title).replace(
+            regex,
+            "<strong>$1</strong>"
+        );
+    }
+
+
+
+    // =========================================
+    // ESCAPE HTML
+    // =========================================
+
+    function escapeHTML(text) {
+
+        const div = document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+    }
+
+
+
+    // =========================================
+    // INPUT EVENT
+    // =========================================
+
+    searchInput.addEventListener("input", () => {
+
+        showSuggestions(searchInput.value);
+
+    });
+
+
+
+    // =========================================
+    // KEYBOARD NAVIGATION
+    // =========================================
+
+    searchInput.addEventListener("keydown", (event) => {
+
+        const items = suggestionsBox.querySelectorAll(
+            ".movie-suggestion-item"
+        );
+
+        if (!suggestionsBox.classList.contains("show") ||
+            items.length === 0) {
+
+            return;
+        }
+
+
+        const activeItem =
+            suggestionsBox.querySelector(
+                ".movie-suggestion-item.active"
+            );
+
+
+        let index = Array.from(items).indexOf(activeItem);
+
+
+        // Arrow Down
+        if (event.key === "ArrowDown") {
+
+            event.preventDefault();
+
+            index++;
+
+            if (index >= items.length) {
+                index = 0;
+            }
+
+            setActiveSuggestion(items, index);
+        }
+
+
+        // Arrow Up
+        else if (event.key === "ArrowUp") {
+
+            event.preventDefault();
+
+            index--;
+
+            if (index < 0) {
+                index = items.length - 1;
+            }
+
+            setActiveSuggestion(items, index);
+        }
+
+
+        // Enter
+        else if (event.key === "Enter") {
+
+            if (activeItem) {
+
+                event.preventDefault();
+
+                activeItem.click();
+            }
+        }
+
+
+        // Escape
+        else if (event.key === "Escape") {
+
+            suggestionsBox.classList.remove("show");
+
+        }
+
+    });
+
+
+
+    // =========================================
+    // SET ACTIVE SUGGESTION
+    // =========================================
+
+    function setActiveSuggestion(items, index) {
+
+        items.forEach(item => {
+            item.classList.remove("active");
+        });
+
+        items[index].classList.add("active");
+
+        items[index].scrollIntoView({
+            block: "nearest"
+        });
+    }
+
+
+
+    // =========================================
+    // CLICK OUTSIDE
+    // =========================================
+
+    document.addEventListener("click", (event) => {
+
+        if (!event.target.closest(".movie-search-wrapper")) {
+
+            suggestionsBox.classList.remove("show");
+
+        }
+
+    });
+
+});

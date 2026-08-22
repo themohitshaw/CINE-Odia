@@ -4,13 +4,21 @@
 CINE-Odia
 {% endblock %}
 
+
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/index.css') }}">
+
 {% endblock %}
+
 
 {% block content %}
 
-<!-- CINE-ODIA MOVIE RECOMMENDATION -->
+<!-- =========================================================
+     CINE-ODIA MOVIE RECOMMENDATION
+========================================================= -->
+
 <section class="cine-banner">
 
     <div class="cine-main">
@@ -27,43 +35,81 @@ CINE-Odia
         <div class="cine-corner top-left"></div>
         <div class="cine-corner bottom-right"></div>
 
+
         <div class="cine-recommendation">
 
+            <!-- BADGE -->
+
             <div class="cine-badge">
+
                 <i class="fa-solid fa-film"></i>
+
                 <span>Odia Movie Discovery</span>
+
             </div>
 
+
+            <!-- TITLE -->
+
             <h1 class="cine-recommendation-title">
+
                 Discover Your Next
+
                 <span>Favorite Movie</span>
+
             </h1>
 
+
+            <!-- SUBTITLE -->
+
             <p class="cine-recommendation-subtitle">
+
                 Tell us the Odia movies you love.
                 Our recommendation system will help you
                 discover your next cinematic favorite.
+
             </p>
 
-            <!-- MOVIE PREFERENCE FORM -->
-            <form class="movie-preference-box" id="moviePreferenceForm" method="POST" action="/">
+
+            <!-- =================================================
+                 MOVIE PREFERENCE FORM
+            ================================================= -->
+
+            <form class="movie-preference-box"
+                  id="moviePreferenceForm"
+                  method="POST"
+                  action="/">
+
+                <!-- HEADER -->
 
                 <div class="preference-header">
 
                     <h2 class="preference-heading">
+
                         <i class="fa-solid fa-heart"></i>
+
                         <span>Your Favorite Movies</span>
+
                     </h2>
 
-                    <div class="preference-counter" id="movieCounter">
+
+                    <div class="preference-counter"
+                         id="movieCounter">
+
                         <i class="fa-solid fa-clapperboard"></i>
+
                         <span>3 / 10</span>
+
                     </div>
 
                 </div>
 
+
                 <!-- MOVIE INPUTS -->
-                <div class="movie-inputs" id="movieInputs">
+
+                <div class="movie-inputs"
+                     id="movieInputs">
+
 
                     <div class="movie-field">
 
@@ -71,10 +117,16 @@ CINE-Odia
                             01
                         </span>
 
-                        <input type="text" name="movies" class="movie-input" placeholder="Favorite movie 1"
-                            autocomplete="off" aria-label="Favorite movie 1">
+                        <input
+                            type="text"
+                            name="movies"
+                            class="movie-input"
+                            placeholder="Favorite movie 1"
+                            autocomplete="off"
+                            aria-label="Favorite movie 1">
 
                     </div>
+
 
                     <div class="movie-field">
 
@@ -82,10 +134,16 @@ CINE-Odia
                             02
                         </span>
 
-                        <input type="text" name="movies" class="movie-input" placeholder="Favorite movie 2"
-                            autocomplete="off" aria-label="Favorite movie 2">
+                        <input
+                            type="text"
+                            name="movies"
+                            class="movie-input"
+                            placeholder="Favorite movie 2"
+                            autocomplete="off"
+                            aria-label="Favorite movie 2">
 
                     </div>
+
 
                     <div class="movie-field">
 
@@ -93,59 +151,106 @@ CINE-Odia
                             03
                         </span>
 
-                        <input type="text" name="movies" class="movie-input" placeholder="Favorite movie 3"
-                            autocomplete="off" aria-label="Favorite movie 3">
+                        <input
+                            type="text"
+                            name="movies"
+                            class="movie-input"
+                            placeholder="Favorite movie 3"
+                            autocomplete="off"
+                            aria-label="Favorite movie 3">
 
                     </div>
 
                 </div>
 
+
                 <!-- FORM ACTIONS -->
+
                 <div class="preference-actions">
 
-                    <button type="button" class="preference-btn add-movie-btn" id="addMovieBtn">
+                    <button
+                        type="button"
+                        class="preference-btn add-movie-btn"
+                        id="addMovieBtn">
+
                         <i class="fa-solid fa-plus"></i>
+
                         <span>Add More</span>
+
                     </button>
 
-                    <button type="submit" class="preference-btn suggestion-btn" id="suggestionBtn">
+
+                    <button
+                        type="submit"
+                        class="preference-btn suggestion-btn"
+                        id="suggestionBtn">
+
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
+
                         <span>Get Suggestions</span>
+
                     </button>
 
                 </div>
 
+
                 <!-- MOVIE LIMIT -->
-                <p class="movie-limit" id="movieLimit">
+
+                <p class="movie-limit"
+                   id="movieLimit">
+
                     <i class="fa-solid fa-circle-info"></i>
+
                     <span>
                         Add at least one movie.
                         You can add up to 10 favorites.
                     </span>
+
                 </p>
 
             </form>
 
+
             <!-- BOTTOM INFORMATION -->
+
             <div class="cine-bottom-info">
 
                 <div class="cine-info-item">
+
                     <i class="fa-solid fa-star"></i>
-                    <span>Personalized Recommendations</span>
+
+                    <span>
+                        Personalized Recommendations
+                    </span>
+
                 </div>
+
 
                 <span class="cine-info-divider"></span>
 
+
                 <div class="cine-info-item">
+
                     <i class="fa-solid fa-film"></i>
-                    <span>Odia Cinema</span>
+
+                    <span>
+                        Odia Cinema
+                    </span>
+
                 </div>
+
 
                 <span class="cine-info-divider"></span>
 
+
                 <div class="cine-info-item">
+
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>Smart Discovery</span>
+
+                    <span>
+                        Smart Discovery
+                    </span>
+
                 </div>
 
             </div>
@@ -157,113 +262,328 @@ CINE-Odia
 </section>
 
 
-<!-- MOVIE EXPLORE SECTION -->
-<section class="movie-explore-section" id="movies">
+
+<!-- =========================================================
+     MOVIE EXPLORE SECTION
+========================================================= -->
+
+<section class="movie-explore-section"
+         id="movies">
+
 
     <div class="movie-explore-container">
 
+
+        <!-- =================================================
+             EXPLORE HEADER
+        ================================================= -->
+
         <div class="movie-explore-header">
+
+
+            <!-- HEADER TEXT -->
 
             <div class="movie-explore-heading-wrapper">
 
+
                 <div class="movie-explore-label">
+
                     <i class="fa-solid fa-film"></i>
-                    <span>CINE-Odia Collection</span>
+
+                    <span>
+                        CINE-Odia Collection
+                    </span>
+
                 </div>
 
+
                 <h2 class="movie-explore-title">
+
                     Explore
+
                     <span>Odia Movies</span>
+
                 </h2>
 
+
                 <p class="movie-explore-description">
+
                     Search through our collection and discover
                     movies you may have missed.
+
                 </p>
 
             </div>
 
-            <!-- SEARCH FORM -->
-            <form class="movie-search-form" method="POST" action="{{ url_for('home') }}#movies">
 
-                <div class="movie-search-icon">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+
+            <!-- =================================================
+                 SEARCH
+            ================================================= -->
+
+            <div class="movie-search-wrapper">
+
+
+                <form
+                    class="movie-search-form"
+                    method="POST"
+                    action="{{ url_for('home') }}#movies"
+                    autocomplete="off"
+                    id="movieSearchForm">
+
+
+                    <!-- SEARCH ICON -->
+
+                    <div class="movie-search-icon">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                    </div>
+
+
+                    <!-- SEARCH INPUT -->
+
+                    <input
+                        type="search"
+                        name="search"
+                        id="movieSearchInput"
+                        class="movie-search-input"
+                        placeholder="Search an Odia movie..."
+                        autocomplete="off"
+                        maxlength="100">
+
+
+                    <!-- CLEAR BUTTON -->
+
+                    <!-- <button
+                        type="button"
+                        class="movie-search-clear"
+                        id="movieSearchClear"
+                        aria-label="Clear search">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button> -->
+
+
+                    <!-- SEARCH BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="movie-search-button">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <span>Search</span>
+
+                    </button>
+
+                </form>
+
+
+
+                <!-- =================================================
+                     LIVE SEARCH SUGGESTIONS
+                ================================================= -->
+
+                <div
+                    class="movie-search-suggestions"
+                    id="movieSearchSuggestions">
+
                 </div>
 
-                <input type="search" name="search" class="movie-search-input" placeholder="Search an Odia movie..."
-                    autocomplete="off" maxlength="100">
-
-                <button type="submit" class="movie-search-button" name="search">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Search</span>
-                </button>
-
-            </form>
+            </div>
 
         </div>
 
 
-        <!-- SEARCH RESULTS -->
-        <div class="movie-search-results">
+
+        <!-- =========================================================
+             SEARCH RESULTS
+        ========================================================= -->
+
+        <div
+            class="movie-search-results"
+            id="movieSearchResults">
+
 
             {% if all_movies %}
 
-            {% for movie in all_movies %}
 
-            <div class="movie-card">
+                {% for movie in all_movies %}
 
-                <div class="movie-card-poster">
-                    <img src="{{ movie.poster_link }}" alt="{{ movie.title }}">
+
+                <div
+                    class="movie-card"
+                    data-title="{{ movie['title']|lower }}">
+
+
+                    <!-- POSTER -->
+
+                    <div class="movie-card-poster">
+
+                        <img
+                            src="{{ movie['poster_link'] }}"
+                            alt="{{ movie['title'] }}"
+                            loading="lazy">
+
+                    </div>
+
+
+
+                    <!-- CONTENT -->
+
+                    <div class="movie-card-content">
+
+
+                        <!-- TITLE -->
+
+                        <h3 class="movie-card-title">
+
+                            {{ movie['title'] }}
+
+                        </h3>
+
+
+                        <!-- RELEASE -->
+
+                        <p class="movie-card-info">
+
+                            <strong>Release:</strong>
+
+                            {{ movie['release'] }}
+
+                        </p>
+
+
+                        <!-- RATING -->
+
+                        <p class="movie-card-info">
+
+                            <strong>Rating:</strong>
+
+                            {{ movie['rate'] }}
+
+                        </p>
+
+
+                        <!-- GENRE -->
+
+                        <p class="movie-card-info">
+
+                            <strong>Genre:</strong>
+
+                            {{ movie['genre'] }}
+
+                        </p>
+
+
+                        <!-- CAST -->
+
+                        <p class="movie-card-info">
+
+                            <strong>Cast:</strong>
+
+                            {{ movie['star_cast'] }}
+
+                        </p>
+
+
+                        <!-- RESOURCE BUTTON -->
+
+                        <a
+                            href="{{ movie['movie_link'] }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="movie-card-button">
+
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                            <span>
+                                Explore Resources
+                            </span>
+
+                        </a>
+
+                    </div>
+
                 </div>
 
-                <div class="movie-card-content">
 
-                    <h3 class="movie-card-title">
-                        {{ movie.title }}
-                    </h3>
+                {% endfor %}
 
-                    <p class="movie-card-info">
-                        <strong>Release:</strong>
-                        {{ movie.release }}
-                    </p>
-
-                    <p class="movie-card-info">
-                        <strong>Rating:</strong>
-                        {{ movie.rate }}
-                    </p>
-
-                    <p class="movie-card-info">
-                        <strong>Genre:</strong>
-                        {{ movie.genre }}
-                    </p>
-
-                    <p class="movie-card-info">
-                        <strong>Cast:</strong>
-                        {{ movie.star_cast }}
-                    </p>
-
-                    <a href="{{ movie.movie_link }}" target="_blank" class="movie-card-button">
-                        <i class="fa-solid fa-play"></i>
-                        Explore on youtube
-                    </a>
-
-                </div>
-
-            </div>
-
-            {% endfor %}
 
             {% else %}
 
-            <div class="movie-search-empty">
-                <i class="fa-solid fa-film"></i>
-                <span>No movies found.</span>
-            </div>
+
+                <!-- EMPTY -->
+
+                <div class="movie-search-empty">
+
+                    <i class="fa-solid fa-film"></i>
+
+                    <span>
+                        No movies found.
+                    </span>
+
+                </div>
+
 
             {% endif %}
 
         </div>
 
+
+
+        <!-- =========================================================
+             PAGINATION
+        ========================================================= -->
+
+        <div
+            class="movie-pagination"
+            id="moviePagination">
+
+
+            <!-- PREVIOUS -->
+
+            <button
+                type="button"
+                class="pagination-btn pagination-prev"
+                id="prevPage">
+
+                <i class="fa-solid fa-chevron-left"></i>
+
+                <span>Previous</span>
+
+            </button>
+
+
+
+            <!-- PAGE NUMBERS -->
+
+            <div
+                class="pagination-numbers"
+                id="paginationNumbers">
+
+            </div>
+
+
+
+            <!-- NEXT -->
+
+            <button
+                type="button"
+                class="pagination-btn pagination-next"
+                id="nextPage">
+
+                <span>Next</span>
+
+                <i class="fa-solid fa-chevron-right"></i>
+
+            </button>
+
+        </div>
+
     </div>
 
 </section>
@@ -271,8 +591,14 @@ CINE-Odia
 {% endblock %}
 
 
+
 {% block extra_js %}
+
+<script>
+    const movieTitles = {{ all_movies | map(attribute='title') | list | tojson }};
+</script>
 
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
 {% endblock %}
+
