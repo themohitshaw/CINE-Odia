@@ -1,1316 +1,524 @@
-document.addEventListener("DOMContentLoaded", function () {
-
-    /* =========================================
-       CINE-ODIA INDEX PAGE
-       ========================================= */
-
-    /*
-       This JavaScript file handles all interactive
-       functionality of the CINE-Odia home page.
-
-       Main Features:
-       1. Movie preference form
-       2. Add favorite movies
-       3. Remove favorite movies
-       4. Movie field numbering
-       5. Enter-key navigation
-       6. Form validation and submission
-       7. Movie search form
-       8. Search validation
-       9. Escape-key search reset
-    */
-
-
-    /* =========================================
-       1. MOVIE PREFERENCE FORM
-       ========================================= */
-
-    /*
-       Get all elements required for the
-       favorite movie recommendation form.
-    */
-
-    const movieForm =
-        document.getElementById("moviePreferenceForm");
-
-    const movieInputs =
-        document.getElementById("movieInputs");
-
-    const addMovieBtn =
-        document.getElementById("addMovieBtn");
-
-    const suggestionBtn =
-        document.getElementById("suggestionBtn");
-
-    const movieLimit =
-        document.getElementById("movieLimit");
-
-    const movieCounter =
-        document.getElementById("movieCounter");
-
-    /* -----------------------------------------
-       Maximum Number of Favorite Movies
-       ----------------------------------------- */
-
-    const MAX_MOVIES = 10;
-
-
-    /*
-       Continue only if all required movie
-       preference elements exist on the page.
-    */
-
-    if (
-        movieForm &&
-        movieInputs &&
-        addMovieBtn &&
-        suggestionBtn &&
-        movieLimit &&
-        movieCounter
-    ) {
-
-
-        /* =========================================
-           1.1 MOVIE STATUS
-           ========================================= */
-
-        /*
-           Updates:
-           - Movie counter
-           - Movie limit message
-           - Add More button state
-        */
-
-        function updateMovieStatus() {
-
-            const fields =
-                movieInputs.querySelectorAll(".movie-field");
-
-            const count = fields.length;
-
-
-            /* -----------------------------------------
-               Update Movie Counter
-               ----------------------------------------- */
-
-            movieCounter.innerHTML = `
-                <i class="fa-solid fa-clapperboard"></i>
-                <span>${count} / ${MAX_MOVIES}</span>
-            `;
-
-
-            /* -----------------------------------------
-               Check Maximum Movie Limit
-               ----------------------------------------- */
-
-            if (count >= MAX_MOVIES) {
-
-                movieLimit.innerHTML = `
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span>
-                        You have reached the maximum of 10 movies.
-                    </span>
-                `;
-
-                addMovieBtn.disabled = true;
-
-            } else {
-
-                movieLimit.innerHTML = `
-                    <i class="fa-solid fa-circle-info"></i>
-                    <span>
-                        ${count}/10 favorite movies added.
-                        Add more for better recommendations.
-                    </span>
-                `;
-
-                addMovieBtn.disabled = false;
-            }
-        }
-
-
-        /* =========================================
-           1.2 RENUMBER MOVIE FIELDS
-           ========================================= */
-
-        /*
-           Keeps movie numbers, placeholders and
-           accessibility labels synchronized after
-           adding or removing movie fields.
-        */
-
-        function renumberMovieFields() {
-
-            movieInputs
-                .querySelectorAll(".movie-field")
-                .forEach(function (field, index) {
-
-                    const number = index + 1;
-
-                    const numberElement =
-                        field.querySelector(".movie-number");
-
-                    const input =
-                        field.querySelector(".movie-input");
-
-                    const remove =
-                        field.querySelector(".remove-movie");
-
-
-                    /* -----------------------------------------
-                       Update Movie Number
-                       ----------------------------------------- */
-
-                    if (numberElement) {
-
-                        numberElement.textContent =
-                            String(number).padStart(2, "0");
-                    }
-
-
-                    /* -----------------------------------------
-                       Update Input Placeholder and Label
-                       ----------------------------------------- */
-
-                    if (input) {
-
-                        input.placeholder =
-                            `Favorite movie ${number}`;
-
-                        input.setAttribute(
-                            "aria-label",
-                            `Favorite movie ${number}`
-                        );
-                    }
-
-
-                    /* -----------------------------------------
-                       Update Remove Button Label
-                       ----------------------------------------- */
-
-                    if (remove) {
-
-                        remove.setAttribute(
-                            "aria-label",
-                            `Remove movie ${number}`
-                        );
-                    }
-                });
-        }
-
-
-        /* =========================================
-           1.3 ADD MOVIE
-           ========================================= */
-
-        /*
-           Creates a new favorite movie input field
-           when the user clicks the "Add More" button.
-        */
-
-        addMovieBtn.addEventListener(
-            "click",
-            function () {
-
-                const count =
-                    movieInputs
-                        .querySelectorAll(".movie-field")
-                        .length;
-
-
-                /* -----------------------------------------
-                   Prevent Adding More Than 10 Movies
-                   ----------------------------------------- */
-
-                if (count >= MAX_MOVIES) {
-                    return;
-                }
-
-
-                /* -----------------------------------------
-                   Calculate Next Movie Number
-                   ----------------------------------------- */
-
-                const next = count + 1;
-
-
-                /* -----------------------------------------
-                   Create New Movie Field
-                   ----------------------------------------- */
-
-                const field =
-                    document.createElement("div");
-
-                field.className = "movie-field";
-
-
-                /* -----------------------------------------
-                   Add Movie Field HTML
-                   ----------------------------------------- */
-
-                field.innerHTML = `
-                    <span class="movie-number">
-                        ${String(next).padStart(2, "0")}
-                    </span>
-
-                    <input
-                        type="text"
-                        name="movies"
-                        class="movie-input"
-                        placeholder="Favorite movie ${next}"
-                        autocomplete="off"
-                        aria-label="Favorite movie ${next}"
-                    >
-
-                    <button
-                        type="button"
-                        class="remove-movie"
-                        aria-label="Remove movie ${next}"
-                    >
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                `;
-
-
-                /* -----------------------------------------
-                   Insert New Field Into Container
-                   ----------------------------------------- */
-
-                movieInputs.appendChild(field);
-
-
-                /* -----------------------------------------
-                   Update Movie Status
-                   ----------------------------------------- */
-
-                updateMovieStatus();
-
-
-                /* -----------------------------------------
-                   Automatically Focus New Input
-                   ----------------------------------------- */
-
-                setTimeout(function () {
-
-                    const input =
-                        field.querySelector(".movie-input");
-
-                    if (input) {
-                        input.focus();
-                    }
-
-                }, 100);
-            }
-        );
-
-
-        /* =========================================
-           1.4 REMOVE MOVIE
-           ========================================= */
-
-        /*
-           Removes a favorite movie field when
-           the user clicks its remove button.
-        */
-
-        movieInputs.addEventListener(
-            "click",
-            function (event) {
-
-                const remove =
-                    event.target.closest(".remove-movie");
-
-
-                /* -----------------------------------------
-                   Check Whether Remove Button Was Clicked
-                   ----------------------------------------- */
-
-                if (!remove) {
-                    return;
-                }
-
-
-                const field =
-                    remove.closest(".movie-field");
-
-
-                if (!field) {
-                    return;
-                }
-
-
-                const fields =
-                    movieInputs.querySelectorAll(".movie-field");
-
-
-                /* -----------------------------------------
-                   Keep At Least One Movie Field
-                   ----------------------------------------- */
-
-                if (fields.length <= 1) {
-
-                    movieLimit.innerHTML = `
-                        <i class="fa-solid fa-circle-info"></i>
-                        <span>
-                            Keep at least one movie field.
-                        </span>
-                    `;
-
-                    return;
-                }
-
-
-                /* -----------------------------------------
-                   Remove Animation
-                   ----------------------------------------- */
-
-                field.style.opacity = "0";
-
-                field.style.transform =
-                    "scale(.92) translateY(10px)";
-
-
-                /* -----------------------------------------
-                   Remove Field After Animation
-                   ----------------------------------------- */
-
-                setTimeout(function () {
-
-                    field.remove();
-
-                    renumberMovieFields();
-
-                    updateMovieStatus();
-
-                }, 220);
-            }
-        );
-
-
-        /* =========================================
-           1.5 ENTER KEY NAVIGATION
-           ========================================= */
-
-        /*
-           Pressing Enter inside a movie input:
-           - Moves to the next input if available.
-           - Submits the form if it is the last input.
-        */
-
-        movieInputs.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (event.key !== "Enter") {
-                    return;
-                }
-
-
-                const input =
-                    event.target.closest(".movie-input");
-
-
-                if (!input) {
-                    return;
-                }
-
-
-                /* -----------------------------------------
-                   Prevent Default Form Submission
-                   ----------------------------------------- */
-
-                event.preventDefault();
-
-
-                /* -----------------------------------------
-                   Get All Movie Inputs
-                   ----------------------------------------- */
-
-                const inputs =
-                    Array.from(
-                        movieInputs.querySelectorAll(
-                            ".movie-input"
-                        )
-                    );
-
-
-                const currentIndex =
-                    inputs.indexOf(input);
-
-
-                const nextInput =
-                    inputs[currentIndex + 1];
-
-
-                /* -----------------------------------------
-                   Focus Next Input or Submit Form
-                   ----------------------------------------- */
-
-                if (nextInput) {
-
-                    nextInput.focus();
-
-                } else {
-
-                    movieForm.requestSubmit();
-                }
-            }
-        );
-
-
-        /* =========================================
-           1.6 MOVIE FORM SUBMISSION
-           ========================================= */
-
-        /*
-           Validates the favorite movie inputs before
-           allowing the recommendation form to submit.
-        */
-
-        movieForm.addEventListener(
-            "submit",
-            function (event) {
-
-                /* -----------------------------------------
-                   Collect Movie Input Values
-                   ----------------------------------------- */
-
-                const movies =
-                    Array.from(
-                        movieInputs.querySelectorAll(
-                            ".movie-input"
-                        )
-                    )
-                    .map(function (input) {
-
-                        return input.value.trim();
-
-                    })
-                    .filter(Boolean);
-
-
-                /* -----------------------------------------
-                   Validate At Least One Movie
-                   ----------------------------------------- */
-
-                if (!movies.length) {
-
-                    event.preventDefault();
-
-
-                    movieLimit.innerHTML = `
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        <span>
-                            Please enter at least one favorite movie.
-                        </span>
-                    `;
-
-
-                    /* -----------------------------------------
-                       Focus First Movie Input
-                       ----------------------------------------- */
-
-                    const firstInput =
-                        movieInputs.querySelector(
-                            ".movie-input"
-                        );
-
-
-                    if (firstInput) {
-                        firstInput.focus();
-                    }
-
-
-                    return;
-                }
-
-
-                /* -----------------------------------------
-                   Show Loading State
-                   ----------------------------------------- */
-
-                suggestionBtn.disabled = true;
-
-                suggestionBtn.innerHTML = `
-                    <i class="fa-solid fa-spinner fa-spin"></i>
-                    <span>Finding Movies...</span>
-                `;
-            }
-        );
-
-
-        /* =========================================
-           1.7 INITIALIZE MOVIE FORM
-           ========================================= */
-
-        /*
-           Set the correct movie numbers and status
-           when the page initially loads.
-        */
-
-        renumberMovieFields();
-
-        updateMovieStatus();
-    }
-
-
-    /* =========================================
-       2. MOVIE SEARCH
-       ========================================= */
-
-    /*
-       Get all elements required for the
-       movie search functionality.
-    */
-
-    const searchForm =
-        document.getElementById("movieSearchForm");
-
-    const searchInput =
-        document.getElementById("movieSearchInput");
-
-    const searchButton =
-        document.getElementById("movieSearchButton");
-
-    const searchError =
-        document.getElementById("movieSearchError");
-
-
-    /*
-       Continue only if all required search
-       elements exist on the page.
-    */
-
-    if (
-        searchForm &&
-        searchInput &&
-        searchButton &&
-        searchError
-    ) {
-
-
-        /* =========================================
-           2.1 SHOW SEARCH ERROR
-           ========================================= */
-
-        /*
-           Displays a validation error message
-           below the movie search form.
-        */
-
-        function showSearchError(message) {
-
-            searchError.innerHTML = `
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <span>${message}</span>
-            `;
-
-            searchError.classList.add("show");
-
-            searchInput.focus();
-        }
-
-
-        /* =========================================
-           2.2 CLEAR SEARCH ERROR
-           ========================================= */
-
-        /*
-           Hides the current search validation
-           error message.
-        */
-
-        function clearSearchError() {
-
-            searchError.classList.remove("show");
-        }
-
-
-        /* =========================================
-           2.3 SEARCH INPUT
-           ========================================= */
-
-        /*
-           Automatically removes the error message
-           when the user starts entering a search term.
-        */
-
-        searchInput.addEventListener(
-            "input",
-            function () {
-
-                if (searchInput.value.trim()) {
-
-                    clearSearchError();
-                }
-            }
-        );
-
-
-        /* =========================================
-           2.4 SEARCH FORM SUBMISSION
-           ========================================= */
-
-        /*
-           Validates the movie search query before
-           sending it to the Flask backend.
-        */
-
-        searchForm.addEventListener(
-            "submit",
-            function (event) {
-
-                const value =
-                    searchInput.value.trim();
-
-
-                /* -----------------------------------------
-                   Validate Empty Search
-                   ----------------------------------------- */
-
-                if (!value) {
-
-                    event.preventDefault();
-
-                    showSearchError(
-                        "Please enter a movie name to search."
-                    );
-
-                    return;
-                }
-
-
-                /* -----------------------------------------
-                   Validate Minimum Length
-                   ----------------------------------------- */
-
-                if (value.length < 2) {
-
-                    event.preventDefault();
-
-                    showSearchError(
-                        "Please enter at least 2 characters."
-                    );
-
-                    return;
-                }
-
-
-                /* -----------------------------------------
-                   Validate Maximum Length
-                   ----------------------------------------- */
-
-                if (value.length > 100) {
-
-                    event.preventDefault();
-
-                    showSearchError(
-                        "Movie name cannot exceed 100 characters."
-                    );
-
-                    return;
-                }
-
-
-                /* -----------------------------------------
-                   Clear Validation Error
-                   ----------------------------------------- */
-
-                clearSearchError();
-
-
-                /* -----------------------------------------
-                   Show Search Loading State
-                   ----------------------------------------- */
-
-                searchButton.classList.add("loading");
-
-                searchButton.innerHTML = `
-                    <i class="fa-solid fa-spinner fa-spin"></i>
-                    <span>Searching...</span>
-                `;
-            }
-        );
-
-
-        /* =========================================
-           2.5 ESCAPE KEY
-           ========================================= */
-
-        /*
-           Pressing Escape clears the search input,
-           removes the error message and focuses
-           the search input again.
-        */
-
-        searchInput.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (event.key === "Escape") {
-
-                    /* -----------------------------------------
-                       Clear Search Input
-                       ----------------------------------------- */
-
-                    searchInput.value = "";
-
-
-                    /* -----------------------------------------
-                       Clear Search Error
-                       ----------------------------------------- */
-
-                    clearSearchError();
-
-
-                    /* -----------------------------------------
-                       Return Focus to Search Input
-                       ----------------------------------------- */
-
-                    searchInput.focus();
-                }
-            }
-        );
-    }
-
-
-    /* =========================================
-       END OF CINE-ODIA INDEX PAGE JAVASCRIPT
-       ========================================= */
-
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    /* =====================================================
-       MOVIE PAGINATION
-    ===================================================== */
-
-    const movieContainer =
-        document.getElementById("movieSearchResults");
-
-    const pagination =
-        document.getElementById("moviePagination");
-
-    const paginationNumbers =
-        document.getElementById("paginationNumbers");
-
-    const previousButton =
-        document.getElementById("prevPage");
-
-    const nextButton =
-        document.getElementById("nextPage");
-
-
-    /* If movie section does not exist, stop */
-
-    if (
-        !movieContainer ||
-        !pagination ||
-        !paginationNumbers
-    ) {
-        return;
-    }
-
-
-    /* =====================================================
-       GET ALL MOVIE CARDS
-    ===================================================== */
-
-    const movieCards =
-        Array.from(
-            movieContainer.querySelectorAll(".movie-card")
-        );
-
-
-    /* =====================================================
-       SETTINGS
-    ===================================================== */
-
-    const moviesPerPage = 10;
-
-    let currentPage = 1;
-
-    const totalMovies = movieCards.length;
-
-    const totalPages =
-        Math.ceil(totalMovies / moviesPerPage);
-
-
-    /* =====================================================
-       NO MOVIES
-    ===================================================== */
-
-    if (totalMovies === 0) {
-
-        pagination.style.display = "none";
-
-        return;
-    }
-
-
-    /* =====================================================
-       SHOW MOVIES
-    ===================================================== */
-
-    function showPage(page) {
-
-        currentPage = page;
-
-
-        /* Calculate range */
-
-        const start =
-            (currentPage - 1) * moviesPerPage;
-
-        const end =
-            start + moviesPerPage;
-
-
-        /* Hide all cards */
-
-        movieCards.forEach(function (card) {
-
-            card.classList.add(
-                "pagination-hidden"
-            );
-
-        });
-
-
-        /* Show current page cards */
-
-        movieCards
-            .slice(start, end)
-            .forEach(function (card) {
-
-                card.classList.remove(
-                    "pagination-hidden"
-                );
-
-            });
-
-
-        /* Update page buttons */
-
-        createPageButtons();
-
-
-        /* Update Previous / Next */
-
-        updateNavigation();
-
-
-        /* Scroll to movie section */
-
-        const movieSection =
-            document.getElementById("movies");
-
-        if (movieSection) {
-
-            movieSection.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-        }
-
-    }
-
-
-    /* =====================================================
-       CREATE PAGE NUMBERS
-    ===================================================== */
-
-    function createPageButtons() {
-
-        paginationNumbers.innerHTML = "";
-
-
-        for (
-            let page = 1;
-            page <= totalPages;
-            page++
-        ) {
-
-            const button =
-                document.createElement("button");
-
-
-            button.type = "button";
-
-            button.className =
-                "pagination-btn";
-
-
-            button.textContent = page;
-
-
-            /* Active page */
-
-            if (page === currentPage) {
-
-                button.classList.add(
-                    "active"
-                );
-
-            }
-
-
-            /* Click */
-
-            button.addEventListener(
-                "click",
-                function () {
-
-                    showPage(page);
-
-                }
-            );
-
-
-            paginationNumbers.appendChild(
-                button
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       PREVIOUS / NEXT
-    ===================================================== */
-
-    function updateNavigation() {
-
-        /* Previous */
-
-        previousButton.disabled =
-            currentPage === 1;
-
-
-        /* Next */
-
-        nextButton.disabled =
-            currentPage === totalPages;
-
-    }
-
-
-    /* =====================================================
-       PREVIOUS BUTTON
-    ===================================================== */
-
-    previousButton.addEventListener(
-        "click",
-        function () {
-
-            if (currentPage > 1) {
-
-                showPage(
-                    currentPage - 1
-                );
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       NEXT BUTTON
-    ===================================================== */
-
-    nextButton.addEventListener(
-        "click",
-        function () {
-
-            if (currentPage < totalPages) {
-
-                showPage(
-                    currentPage + 1
-                );
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       INITIAL PAGE
-    ===================================================== */
-
-    showPage(1);
-
-});
-
+/* ============================================================
+   CINE-Odia — index.js
+   Handles:
+     1. Splash screen fade-out on load
+     2. Live search suggestions (from the `movieTitles` array
+        injected by index.html)
+     3. Client-side filtering of the movie cards already
+        rendered by app.py (by `data-title` attribute)
+     4. Pagination of the (filtered) movie cards
+     5. Pagination of the suggestion cards (Get Suggestions)
+   ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const searchInput = document.getElementById("movieSearchInput");
-    const suggestionsBox = document.getElementById("movieSearchSuggestions");
+    /* ==========================================================
+       SPLASH SCREEN
+    ========================================================== */
 
-    if (!searchInput || !suggestionsBox) {
-        return;
+    const splashScreen = document.getElementById("splashScreen");
+
+    if (splashScreen) {
+        const hideSplash = () => {
+            splashScreen.classList.add("splash-hidden");
+
+            setTimeout(() => {
+                splashScreen.remove();
+            }, 650);
+        };
+
+        const minDelay = new Promise((resolve) => setTimeout(resolve, 600));
+        const pageLoaded = new Promise((resolve) => {
+            if (document.readyState === "complete") {
+                resolve();
+            } else {
+                window.addEventListener("load", resolve, { once: true });
+            }
+        });
+
+        Promise.all([minDelay, pageLoaded]).then(hideSplash);
+
+        // Safety net: never let the splash screen stay up forever
+        setTimeout(hideSplash, 4000);
     }
 
-    // Remove duplicate movie titles
-    const movies = [...new Set(movieTitles || [])]
-        .filter(title => title && title.trim() !== "")
-        .sort((a, b) => a.localeCompare(b));
+
+    /* --------------------------------------------------------
+       ELEMENT REFERENCES
+    -------------------------------------------------------- */
+    const searchForm        = document.getElementById("movieSearchForm");
+    const searchInput       = document.getElementById("movieSearchInput");
+    const suggestionsBox    = document.getElementById("movieSearchSuggestions");
+    const resultsContainer  = document.getElementById("movieSearchResults");
+    const paginationWrapper = document.getElementById("moviePagination");
+    const paginationNumbers = document.getElementById("paginationNumbers");
+    const prevBtn           = document.getElementById("prevPage");
+    const nextBtn           = document.getElementById("nextPage");
+
+    const movieInputsBox    = document.getElementById("movieInputs");
+    const addMovieBtn       = document.getElementById("addMovieBtn");
+    const movieCounter      = document.querySelector("#movieCounter span");
+    const movieLimit        = document.getElementById("movieLimit");
+
+    // `movieTitles` is defined inline in index.html:
+    //   const movieTitles = {{ all_movies | map(attribute='title') | list | tojson }};
+    const titles = typeof movieTitles !== "undefined" ? movieTitles : [];
+
+    // All movie cards currently rendered by the server (app.py -> all_movies)
+    const allCards = resultsContainer
+        ? Array.from(resultsContainer.querySelectorAll(".movie-card"))
+        : [];
+
+    const CARDS_PER_PAGE = 10;
+    const MAX_SUGGESTIONS = 6;
+    const MAX_MOVIES = 10;
+
+    let filteredCards = allCards;
+    let currentPage = 1;
+    let suggestionIndex = -1; // for keyboard navigation
 
 
+    /* ==========================================================
+       SEARCH SUGGESTIONS
+    ========================================================== */
 
-    // =========================================
-    // SHOW MOVIE SUGGESTIONS
-    // =========================================
+    function getMatchingTitles(query) {
+        const normalized = query.trim().toLowerCase();
 
-    function showSuggestions(searchValue) {
+        if (!normalized) return [];
+
+        return titles
+            .filter((title) => title.toLowerCase().includes(normalized))
+            .slice(0, MAX_SUGGESTIONS);
+    }
+
+    function renderSuggestions(matches) {
+        if (!suggestionsBox) return;
 
         suggestionsBox.innerHTML = "";
+        suggestionIndex = -1;
 
-        const query = searchValue.trim().toLowerCase();
-
-        // Don't show anything when input is empty
-        if (!query) {
-            suggestionsBox.classList.remove("show");
-            return;
-        }
-
-
-        // Find matching movies
-        const matches = movies
-            .filter(title =>
-                title.toLowerCase().includes(query)
-            )
-            .slice(0, 8);
-
-
-        // No results
         if (matches.length === 0) {
-
-            suggestionsBox.classList.remove("show");
-
+            suggestionsBox.classList.remove("active");
             return;
         }
 
+        matches.forEach((title) => {
+            const item = document.createElement("div");
+            item.className = "suggestion-item";
+            item.textContent = title;
 
-        // Create suggestion items
-        matches.forEach(title => {
-
-            const suggestion = document.createElement("button");
-
-            suggestion.type = "button";
-            suggestion.className = "movie-suggestion-item";
-
-            suggestion.setAttribute("role", "option");
-
-
-            // Highlight searched text
-            const titleHTML = highlightMatch(title, query);
-
-
-            suggestion.innerHTML = `
-                <span class="movie-suggestion-icon">
-                    <i class="fa-solid fa-film"></i>
-                </span>
-
-                <span class="movie-suggestion-title">
-                    ${titleHTML}
-                </span>
-
-                <span class="movie-suggestion-arrow">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </span>
-            `;
-
-
-            // Click suggestion
-            suggestion.addEventListener("click", () => {
-
+            item.addEventListener("click", () => {
                 searchInput.value = title;
-
-                suggestionsBox.innerHTML = "";
-                suggestionsBox.classList.remove("show");
-
+                clearSuggestions();
+                filterMovies(title);
                 searchInput.focus();
-
             });
 
-
-            suggestionsBox.appendChild(suggestion);
-
+            suggestionsBox.appendChild(item);
         });
 
+        suggestionsBox.classList.add("active");
+    }
 
-        suggestionsBox.classList.add("show");
+    function clearSuggestions() {
+        if (!suggestionsBox) return;
+        suggestionsBox.innerHTML = "";
+        suggestionsBox.classList.remove("active");
+        suggestionIndex = -1;
+    }
+
+    function moveSuggestionFocus(direction) {
+        const items = suggestionsBox.querySelectorAll(".suggestion-item");
+        if (items.length === 0) return;
+
+        items[suggestionIndex]?.classList.remove("active-suggestion");
+
+        suggestionIndex += direction;
+
+        if (suggestionIndex < 0) suggestionIndex = items.length - 1;
+        if (suggestionIndex >= items.length) suggestionIndex = 0;
+
+        const activeItem = items[suggestionIndex];
+        activeItem.classList.add("active-suggestion");
+        searchInput.value = activeItem.textContent;
     }
 
 
+    /* ==========================================================
+       MOVIE FILTERING (client-side, based on data-title)
+    ========================================================== */
 
-    // =========================================
-    // HIGHLIGHT SEARCH TEXT
-    // =========================================
+    function filterMovies(query) {
+        const normalized = query.trim().toLowerCase();
 
-    function highlightMatch(title, query) {
+        filteredCards = normalized
+            ? allCards.filter((card) =>
+                  card.dataset.title.includes(normalized)
+              )
+            : allCards;
 
-        const escapedQuery = query.replace(
-            /[.*+?^${}()|[\]\\]/g,
-            "\\$&"
-        );
+        currentPage = 1;
+        renderPage(currentPage);
+        showEmptyStateIfNeeded();
+    }
 
-        const regex = new RegExp(
-            `(${escapedQuery})`,
-            "gi"
-        );
+    function showEmptyStateIfNeeded() {
+        let emptyState = resultsContainer.querySelector(".movie-search-empty");
 
-        return escapeHTML(title).replace(
-            regex,
-            "<strong>$1</strong>"
-        );
+        if (filteredCards.length === 0) {
+            if (!emptyState) {
+                emptyState = document.createElement("div");
+                emptyState.className = "movie-search-empty";
+                emptyState.innerHTML = `
+                    <i class="fa-solid fa-film"></i>
+                    <span>No movies found.</span>
+                `;
+                resultsContainer.appendChild(emptyState);
+            }
+            emptyState.style.display = "flex";
+        } else if (emptyState) {
+            emptyState.style.display = "none";
+        }
     }
 
 
+    /* ==========================================================
+       FAVORITE MOVIE INPUTS ("Add More" button)
+    ========================================================== */
 
-    // =========================================
-    // ESCAPE HTML
-    // =========================================
-
-    function escapeHTML(text) {
-
-        const div = document.createElement("div");
-
-        div.textContent = text;
-
-        return div.innerHTML;
+    function getMovieFieldCount() {
+        return movieInputsBox
+            ? movieInputsBox.querySelectorAll(".movie-field").length
+            : 0;
     }
 
+    function updateMovieCounter() {
+        const count = getMovieFieldCount();
 
-
-    // =========================================
-    // INPUT EVENT
-    // =========================================
-
-    searchInput.addEventListener("input", () => {
-
-        showSuggestions(searchInput.value);
-
-    });
-
-
-
-    // =========================================
-    // KEYBOARD NAVIGATION
-    // =========================================
-
-    searchInput.addEventListener("keydown", (event) => {
-
-        const items = suggestionsBox.querySelectorAll(
-            ".movie-suggestion-item"
-        );
-
-        if (!suggestionsBox.classList.contains("show") ||
-            items.length === 0) {
-
-            return;
+        if (movieCounter) {
+            movieCounter.textContent = `${count} / ${MAX_MOVIES}`;
         }
 
+        if (addMovieBtn) {
+            const atLimit = count >= MAX_MOVIES;
+            addMovieBtn.disabled = atLimit;
+            addMovieBtn.classList.toggle("disabled", atLimit);
+        }
 
-        const activeItem =
-            suggestionsBox.querySelector(
-                ".movie-suggestion-item.active"
-            );
+        if (movieLimit) {
+            const limitText = movieLimit.querySelector("span");
+            if (limitText) {
+                limitText.textContent =
+                    count >= MAX_MOVIES
+                        ? `You've reached the maximum of ${MAX_MOVIES} favorites.`
+                        : `Add at least one movie. You can add up to ${MAX_MOVIES} favorites.`;
+            }
+        }
+    }
+
+    function addMovieField() {
+        const count = getMovieFieldCount();
+
+        if (!movieInputsBox || count >= MAX_MOVIES) return;
+
+        const nextIndex = count + 1;
+        const number = String(nextIndex).padStart(2, "0");
+
+        const field = document.createElement("div");
+        field.className = "movie-field";
+        field.innerHTML = `
+            <span class="movie-number">${number}</span>
+            <input
+                type="text"
+                name="movies"
+                class="movie-input"
+                placeholder="Favorite movie ${nextIndex}"
+                autocomplete="off"
+                aria-label="Favorite movie ${nextIndex}">
+        `;
+
+        movieInputsBox.appendChild(field);
+        updateMovieCounter();
+
+        field.querySelector(".movie-input")?.focus();
+    }
+
+    if (addMovieBtn) {
+        addMovieBtn.addEventListener("click", addMovieField);
+    }
 
 
-        let index = Array.from(items).indexOf(activeItem);
+    /* ==========================================================
+       PAGINATION HELPERS (shared by both pagination bars)
+    ========================================================== */
+
+    // Builds a compact page list like [1, "...", 4, 5, 6, "...", 93]
+    // instead of listing every page number. `delta` controls how
+    // many pages are shown on each side of the current page.
+    function getPaginationRange(current, total, delta = 1) {
+        const range = [1];
+
+        for (let i = current - delta; i <= current + delta; i++) {
+            if (i > 1 && i < total) {
+                range.push(i);
+            }
+        }
+
+        if (total > 1) {
+            range.push(total);
+        }
+
+        const uniqueSorted = [...new Set(range)].sort((a, b) => a - b);
+
+        const withDots = [];
+        let previous = null;
+
+        uniqueSorted.forEach((page) => {
+            if (previous !== null) {
+                if (page - previous === 2) {
+                    withDots.push(previous + 1);
+                } else if (page - previous > 2) {
+                    withDots.push("...");
+                }
+            }
+            withDots.push(page);
+            previous = page;
+        });
+
+        return withDots;
+    }
 
 
-        // Arrow Down
-        if (event.key === "ArrowDown") {
+    /* ==========================================================
+       PAGINATION (Explore section)
+    ========================================================== */
 
-            event.preventDefault();
+    function getTotalPages() {
+        return Math.max(1, Math.ceil(filteredCards.length / CARDS_PER_PAGE));
+    }
 
-            index++;
+    function renderPage(page) {
+        const totalPages = getTotalPages();
+        currentPage = Math.min(Math.max(page, 1), totalPages);
 
-            if (index >= items.length) {
-                index = 0;
+        const start = (currentPage - 1) * CARDS_PER_PAGE;
+        const end = start + CARDS_PER_PAGE;
+
+        // Hide every card, then show only the ones for this page
+        allCards.forEach((card) => (card.style.display = "none"));
+        filteredCards.slice(start, end).forEach((card) => {
+            card.style.display = "";
+        });
+
+        renderPaginationControls(totalPages);
+    }
+
+    function renderPaginationControls(totalPages) {
+        if (!paginationNumbers) return;
+
+        paginationNumbers.innerHTML = "";
+
+        // Hide pagination entirely if everything fits on one page
+        if (paginationWrapper) {
+            paginationWrapper.style.display = totalPages <= 1 ? "none" : "flex";
+        }
+
+        getPaginationRange(currentPage, totalPages).forEach((page) => {
+            if (page === "...") {
+                const dots = document.createElement("span");
+                dots.className = "pagination-ellipsis";
+                dots.textContent = "...";
+                paginationNumbers.appendChild(dots);
+                return;
             }
 
-            setActiveSuggestion(items, index);
-        }
+            const pageBtn = document.createElement("button");
+            pageBtn.type = "button";
+            pageBtn.className = "pagination-number";
+            pageBtn.textContent = page;
 
-
-        // Arrow Up
-        else if (event.key === "ArrowUp") {
-
-            event.preventDefault();
-
-            index--;
-
-            if (index < 0) {
-                index = items.length - 1;
+            if (page === currentPage) {
+                pageBtn.classList.add("active");
             }
 
-            setActiveSuggestion(items, index);
-        }
+            pageBtn.addEventListener("click", () => renderPage(page));
+            paginationNumbers.appendChild(pageBtn);
+        });
+
+        if (prevBtn) prevBtn.disabled = currentPage === 1;
+        if (nextBtn) nextBtn.disabled = currentPage === totalPages;
+    }
 
 
-        // Enter
-        else if (event.key === "Enter") {
+    /* ==========================================================
+       EVENT LISTENERS (Explore section)
+    ========================================================== */
 
-            if (activeItem) {
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value;
 
+            renderSuggestions(getMatchingTitles(query));
+            filterMovies(query);
+        });
+
+        searchInput.addEventListener("keydown", (event) => {
+            const items = suggestionsBox?.querySelectorAll(".suggestion-item");
+
+            if (!items || items.length === 0) return;
+
+            if (event.key === "ArrowDown") {
                 event.preventDefault();
-
-                activeItem.click();
+                moveSuggestionFocus(1);
+            } else if (event.key === "ArrowUp") {
+                event.preventDefault();
+                moveSuggestionFocus(-1);
+            } else if (event.key === "Escape") {
+                clearSuggestions();
             }
-        }
-
-
-        // Escape
-        else if (event.key === "Escape") {
-
-            suggestionsBox.classList.remove("show");
-
-        }
-
-    });
-
-
-
-    // =========================================
-    // SET ACTIVE SUGGESTION
-    // =========================================
-
-    function setActiveSuggestion(items, index) {
-
-        items.forEach(item => {
-            item.classList.remove("active");
         });
 
-        items[index].classList.add("active");
-
-        items[index].scrollIntoView({
-            block: "nearest"
+        // Close suggestions when clicking outside the search box
+        document.addEventListener("click", (event) => {
+            if (
+                !searchInput.contains(event.target) &&
+                !suggestionsBox?.contains(event.target)
+            ) {
+                clearSuggestions();
+            }
         });
     }
 
+    if (searchForm) {
+        // Client-side filtering already happens live; prevent the full
+        // page reload so results update instantly without a POST round-trip.
+        searchForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            clearSuggestions();
+            filterMovies(searchInput.value);
+        });
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener("click", () => renderPage(currentPage - 1));
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener("click", () => renderPage(currentPage + 1));
+    }
 
 
-    // =========================================
-    // CLICK OUTSIDE
-    // =========================================
+    /* ==========================================================
+       INITIAL RENDER (Explore section)
+    ========================================================== */
 
-    document.addEventListener("click", (event) => {
+    // Normalize each card's data-title once up front so filtering
+    // and matching stay consistent (index.html already lowercases it).
+    allCards.forEach((card) => {
+        card.dataset.title = (card.dataset.title || "").toLowerCase();
+    });
 
-        if (!event.target.closest(".movie-search-wrapper")) {
+    updateMovieCounter();
+    renderPage(1);
 
-            suggestionsBox.classList.remove("show");
 
+    /* ==========================================================
+       SUGGESTIONS PAGINATION
+       (independent of the Explore-section pagination above)
+    ========================================================== */
+
+    const suggestionResultsBox   = document.getElementById("suggestionResults");
+    const suggestionPagination   = document.getElementById("suggestionPagination");
+    const suggestionPageNumbers  = document.getElementById("suggestionPaginationNumbers");
+    const suggestionPrevBtn      = document.getElementById("suggestionPrevPage");
+    const suggestionNextBtn      = document.getElementById("suggestionNextPage");
+
+    if (suggestionResultsBox) {
+
+        const SUGGESTION_CARDS_PER_PAGE = 5;
+
+        const suggestionCards = Array.from(
+            suggestionResultsBox.querySelectorAll(".suggestion-card")
+        );
+
+        let suggestionCurrentPage = 1;
+
+        function getSuggestionTotalPages() {
+            return Math.max(
+                1,
+                Math.ceil(suggestionCards.length / SUGGESTION_CARDS_PER_PAGE)
+            );
         }
 
-    });
+        function renderSuggestionPage(page) {
+            const totalPages = getSuggestionTotalPages();
+            suggestionCurrentPage = Math.min(Math.max(page, 1), totalPages);
+
+            const start = (suggestionCurrentPage - 1) * SUGGESTION_CARDS_PER_PAGE;
+            const end = start + SUGGESTION_CARDS_PER_PAGE;
+
+            suggestionCards.forEach((card) => (card.style.display = "none"));
+            suggestionCards.slice(start, end).forEach((card) => {
+                card.style.display = "";
+            });
+
+            renderSuggestionPaginationControls(totalPages);
+        }
+
+        function renderSuggestionPaginationControls(totalPages) {
+            if (!suggestionPageNumbers) return;
+
+            suggestionPageNumbers.innerHTML = "";
+
+            if (suggestionPagination) {
+                suggestionPagination.style.display =
+                    totalPages <= 1 ? "none" : "flex";
+            }
+
+            getPaginationRange(suggestionCurrentPage, totalPages).forEach((page) => {
+                if (page === "...") {
+                    const dots = document.createElement("span");
+                    dots.className = "pagination-ellipsis";
+                    dots.textContent = "...";
+                    suggestionPageNumbers.appendChild(dots);
+                    return;
+                }
+
+                const pageBtn = document.createElement("button");
+                pageBtn.type = "button";
+                pageBtn.className = "pagination-number";
+                pageBtn.textContent = page;
+
+                if (page === suggestionCurrentPage) {
+                    pageBtn.classList.add("active");
+                }
+
+                pageBtn.addEventListener("click", () => renderSuggestionPage(page));
+                suggestionPageNumbers.appendChild(pageBtn);
+            });
+
+            if (suggestionPrevBtn) {
+                suggestionPrevBtn.disabled = suggestionCurrentPage === 1;
+            }
+            if (suggestionNextBtn) {
+                suggestionNextBtn.disabled = suggestionCurrentPage === totalPages;
+            }
+        }
+
+        if (suggestionPrevBtn) {
+            suggestionPrevBtn.addEventListener("click", () =>
+                renderSuggestionPage(suggestionCurrentPage - 1)
+            );
+        }
+
+        if (suggestionNextBtn) {
+            suggestionNextBtn.addEventListener("click", () =>
+                renderSuggestionPage(suggestionCurrentPage + 1)
+            );
+        }
+
+        renderSuggestionPage(1);
+    }
 
 });

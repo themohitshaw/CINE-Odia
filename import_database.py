@@ -6,7 +6,7 @@ import pandas as pd
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
-excel_file_path = "database/DB_demo.xlsx"
+excel_file_path = "database/odia_movie_list.xlsx"
 
 try:
     df = pd.read_excel(excel_file_path)

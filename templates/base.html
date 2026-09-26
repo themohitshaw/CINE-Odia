@@ -858,7 +858,7 @@
             <li>
 
                 <a
-                    href="#"
+                    href="{{ url_for('home') }}#about"
                     id="aboutLink"
                     class="{% if request.endpoint == 'about' %}active{% endif %}">
 
@@ -1251,6 +1251,9 @@
                 const moviesSection =
                     document.getElementById("movies");
 
+                const aboutSection =
+                    document.getElementById("about");
+
 
                 function setActiveLink(link) {
 
@@ -1282,13 +1285,49 @@
 
 
                 /* =================================================
-                   MOVIES INTERSECTION OBSERVER
+                   SCROLL-SPY INTERSECTION OBSERVER
+
+                   Tracks the Movies section and the About section
+                   at once, so the red underline in the navbar
+                   follows whichever section is currently in view.
+
+                   Priority when more than one section is
+                   intersecting at the same time (e.g. during the
+                   scroll transition between them):
+
+                       About  >  Movies  >  Home
                 ================================================= */
 
                 if (
-                    moviesSection &&
-                    "{{ request.endpoint }}" === "home"
+                    "{{ request.endpoint }}" === "home" &&
+                    (moviesSection || aboutSection)
                 ) {
+
+                    const sectionIntersecting = new Map();
+
+                    function updateActiveSection() {
+
+                        if (
+                            aboutSection &&
+                            sectionIntersecting.get(aboutSection)
+                        ) {
+
+                            setActiveLink(aboutLink);
+
+                        } else if (
+                            moviesSection &&
+                            sectionIntersecting.get(moviesSection)
+                        ) {
+
+                            setActiveLink(moviesLink);
+
+                        } else {
+
+                            setActiveLink(homeLink);
+
+                        }
+
+                    }
 
                     const observer =
                         new IntersectionObserver(
@@ -1297,24 +1336,15 @@
                                 entries.forEach(
                                     function (entry) {
 
-                                        if (
+                                        sectionIntersecting.set(
+                                            entry.target,
                                             entry.isIntersecting
-                                        ) {
-
-                                            setActiveLink(
-                                                moviesLink
-                                            );
-
-                                        } else {
-
-                                            setActiveLink(
-                                                homeLink
-                                            );
-
-                                        }
+                                        );
 
                                     }
                                 );
+
+                                updateActiveSection();
 
                             },
                             {
@@ -1323,9 +1353,17 @@
                         );
 
 
-                    observer.observe(
-                        moviesSection
-                    );
+                    if (moviesSection) {
+                        observer.observe(
+                            moviesSection
+                        );
+                    }
+
+                    if (aboutSection) {
+                        observer.observe(
+                            aboutSection
+                        );
+                    }
 
                 }
 
@@ -1442,6 +1480,33 @@
 
                                 setActiveLink(
                                     moviesLink
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* =================================================
+                   ABOUT LINK
+                ================================================= */
+
+                if (aboutLink) {
+
+                    aboutLink.addEventListener(
+                        "click",
+                        function () {
+
+                            if (
+                                "{{ request.endpoint }}"
+                                === "home"
+                            ) {
+
+                                setActiveLink(
+                                    aboutLink
                                 );
 
                             }
