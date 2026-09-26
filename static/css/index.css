@@ -3284,7 +3284,7 @@ html[data-theme="light"] .suggestions-section {
 
     position: relative;
 
-    overflow: visible;
+    overflow: hidden;
 
     background: linear-gradient(
         180deg,
